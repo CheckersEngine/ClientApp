@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CheckersPolygon.Helpers.Enums
 {
-    /* Направление хода шашки
+    /* The direction of the checker's move
      */
     enum TurnDirection
     {

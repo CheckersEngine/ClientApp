@@ -10,18 +10,18 @@ using System.Windows.Forms;
 
 namespace CheckersPolygon.Controllers
 {
-    /* Контроллер, заведующий написанием сообщений в панель информирования
+    /* The controller of writing messages to the information panel
      */
     sealed class UserLogController
     {
-        private RichTextBox userLog; // Ссылка на объект панели информирования
+        private RichTextBox userLog; // Link to the information bar object
 
         public UserLogController(ref RichTextBox userLog)
         {
             this.userLog = userLog;
         }
 
-        /* Печать сообщения в панель информирования
+        /* Printing a message in the information bar
          */
         public void WriteMessage(string message)
         {
@@ -29,13 +29,13 @@ namespace CheckersPolygon.Controllers
             ColorizeMessages();
         }
 
-        /* Подсветка ключевых слов
+        /* Keyword highlighting
          */
         private void ColorizeMessages()
         {
             foreach (KeyValuePair<string, Color> pair in Constants.userLogKeywords)
             {
-                // Ключевые слова представлены в виде регулярных выражений и связаны с цветом
+                // Keywords are represented in the form of regular expressions and are associated with color
                 MatchCollection allMatch = Regex.Matches(userLog.Text, pair.Key); 
                 foreach (Match word in allMatch)
                 {

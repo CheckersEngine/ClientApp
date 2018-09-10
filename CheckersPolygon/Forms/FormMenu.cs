@@ -15,14 +15,14 @@ namespace CheckersPolygon
 {
     public partial class FormMenu : Form
     {
-        public bool aiAffected; // Влияет ли ИИ на игру
-        private bool firstStarted; // Форма первый раз открыта?
+        public bool aiAffected; // Does AI influence the game?
+        private bool firstStarted; // Is the form open for the first time?
         public bool FirstStarted
         {
             get { return firstStarted; }
             set
             {
-                // Если форма открыта первый раз - заблокировать кнопки "продолжить" и "сохранить"
+                // If the form is opened for the first time - block the buttons "continue" and "save"
                 if (value == true)
                 {
                     btnContinue.Enabled = false;
@@ -37,7 +37,7 @@ namespace CheckersPolygon
             }
         }
 
-        // Декорации
+        // Decorations
         Pawn decorativePawn = new Pawn(Helpers.Enums.CheckerSide.White, Helpers.Enums.CheckerMoveDirection.Downstairs,
                 new Helpers.CheckersCoordinateSet()
                 {
@@ -91,7 +91,7 @@ namespace CheckersPolygon
             this.FirstStarted = false;
         }
 
-        /* Нажата кнопка "новая игра"
+        /* The button "new game" is pressed
          */
         private void btnNewGame_Click(object sender, EventArgs e)
         {
@@ -123,14 +123,14 @@ namespace CheckersPolygon
             }
         }
 
-        /* Нажата кнопка "выход"
+        /* The "exit" button is pressed.
          */
         private void btnExit_Click(object sender, EventArgs e)
         {
             Program.mainMenu.Close();
         }
 
-        /* Перерисовка формы
+        /* Redrawing the form
          */
         private void FormMenu_Paint(object sender, PaintEventArgs e)
         {
@@ -140,7 +140,7 @@ namespace CheckersPolygon
             for (int i = 0; i < 4; i++) decorativeBoardCell[i].Draw(graphics);
         }
 
-        /* Нажата кнопка "загрузить"
+        /* The "load game" button is pressed
          */
         private void btnLoadGame_Click(object sender, EventArgs e)
         {

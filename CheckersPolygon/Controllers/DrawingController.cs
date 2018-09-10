@@ -10,16 +10,16 @@ using System.Windows.Forms;
 
 namespace CheckersPolygon.Controllers
 {
-    /* Контроллер, заведующий управлением отрисовкой игровой сцены
+    /* Controller, head of the management of the rendering of the game scene
      */
     internal sealed class DrawingController
     {
-        private Panel gameBoard; // Ссылка на объект, пространство которого будет представлять игровую доску
-        private delegate void Draw(Graphics graph); // Все "рисующиеся" объекты должны иметь такой прототип метода отрисовки
+        private Panel gameBoard; // Reference to an object whose space will represent the game board
+        private delegate void Draw(Graphics graph); // All "drawing" objects should have such a prototype of the drawing method
 
-        /* Список отрисовки игровых обьектов с учетом приоритета (Z-Order)
-         * Список содержит слои в порядке их отрисовки (сначала рисуется все с индексом 0, потом с индексом 1 и т.д)
-         * Слои содержат список методов отрисовки обьектов */
+        /* The list of rendering game objects taking into account the priority (Z-Order)
+         * The list contains the layers in the order in which they are drawn (at first everything is drawn with the index 0, then with the index 1, etc.)
+         * Layers contain a list of methods for drawing objects */
         private List<List<Draw>> prioritizedDrawingList;
 
 
@@ -27,26 +27,26 @@ namespace CheckersPolygon.Controllers
         {
             this.gameBoard = gameBoard;
             this.prioritizedDrawingList = new List<List<Draw>>();
-            this.prioritizedDrawingList.Add(new List<Draw>()); // Добавление нулевого слоя
+            this.prioritizedDrawingList.Add(new List<Draw>()); // Adding a 0-level
         }
 
 
-        /* Добавление метода отрисовки в список отрисовки согласно приоритету слоя (Z-Order) каждого объекта
-         * Обычно добавляется после создания или загрузки объекта
+        /* Adding a drawing method to the drawing list according to the priority of the layer (Z-Order) of each object
+         * Usually added after creating or loading an object
          */
         public void AddToDrawingList(IDrawable drawingEntity)
         {
-            // Создание новых слоев (если не существуют)
+            // Creating new layers (if they do not exist)
             while (drawingEntity.ZOrder > prioritizedDrawingList.Count - 1)
                 this.prioritizedDrawingList.Add(new List<Draw>());
 
-            // Добавление метода в нужный слой
+            // Adding a method to the desired layer
             prioritizedDrawingList[drawingEntity.ZOrder].Add(drawingEntity.Draw);
         }
 
 
-        /* Удаление из списка отрисовки
-         * Обычно вызывается в момент уничтожения игрового объекта
+        /* Removing from the drawing list
+         * Usually it is called at the moment of destruction of the game object
          */
         public void DeleteFromDrawingList(IDrawable drawingEntity)
         {
@@ -54,7 +54,7 @@ namespace CheckersPolygon.Controllers
             {
                 foreach (Draw drawingCall in layer)
                 {
-                    if (drawingCall == drawingEntity.Draw) // Поиск (не)нужного метода
+                    if (drawingCall == drawingEntity.Draw) // Search for self-drawing method of removed object
                     {
                         layer.Remove(drawingCall);
                         return;
@@ -64,28 +64,28 @@ namespace CheckersPolygon.Controllers
         }
 
 
-        /* Главный метод отрисовки
-         * Для перерисовки игровой сцены используют этот метод через Game
-         * Отрисовка выполняется на Bitmap, после рисуется сам Bitmap
-         * - это устраняет "дерганье" изображения.
+        /* The main method of rendering
+         * To redraw the game scene, use this method via "Game" object
+         * Drawing is performed on Bitmap, after Bitmap itself is drawn
+         * - this prevents the visual artifacts of the image.
          */
         public void PrioritizedDraw()
         {
-            // Если окно свернуто, отрисовка не производится
+            // If the window is minimized, no drawing is performed
             if (gameBoard.Width == 0 || gameBoard.Height == 0)
                 return;
 
-            Image buffer = new Bitmap(gameBoard.Width, gameBoard.Height); // буфер размером с экран (Panel)
+            Image buffer = new Bitmap(gameBoard.Width, gameBoard.Height); // Buffer has the size of the screen (Panel)
             Graphics graphicsAdapter = Graphics.FromImage(buffer);
-            foreach (List<Draw> layer in prioritizedDrawingList) // Послойная отрисовка всех игровых объектов
+            foreach (List<Draw> layer in prioritizedDrawingList) // Layered rendering of all game objects
             {
                 foreach (Draw drawingCall in layer)
                 {
-                    drawingCall(graphicsAdapter); // Отрисовка игровых объектов
+                    drawingCall(graphicsAdapter); // Drawing game objects
                 }
             }
             graphicsAdapter = gameBoard.CreateGraphics();
-            graphicsAdapter.DrawImage(buffer, new Point(0, 0)); // Отрисовка буфера на экран
+            graphicsAdapter.DrawImage(buffer, new Point(0, 0)); // Drawing the buffer on the screen
         }
     }
 }

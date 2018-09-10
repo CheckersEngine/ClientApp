@@ -8,16 +8,16 @@ using System.Threading.Tasks;
 
 namespace CheckersPolygon.Helpers
 {
-    /* Список возможных ходов для шашки с определенной позиции
+    /* List of possible moves for the checker from a certain position
      */
     [Serializable]
     class PathPoint
     {
-        public Point Position { get; private set; } // Текущая позиция
-        public bool finalPoint = false; // Конечная ли точка в цепочке хода
-        public bool afterAggression = false; // Точка, на которую можно встать после съеденной шашки
+        public Point Position { get; private set; } // Current position
+        public bool finalPoint = false; // Is the end point in the chain of trace?
+        public bool afterAggression = false; // The point on which checker can stand after eating the enemy
 
-        protected List<PathPoint>[] traces = new List<PathPoint>[4]; // Цепочки ходов по 4 направлениям
+        protected List<PathPoint>[] traces = new List<PathPoint>[4]; // Traces in 4 directions
 
         public PathPoint(Point position, bool finalPoint)
         {
@@ -34,11 +34,11 @@ namespace CheckersPolygon.Helpers
                 traces[i] = new List<PathPoint>();
         }
 
-        /* Если у позиции есть только мирные продолжения или их нет совсем
+        /* If the position has only peaceful continuations or there are none at all
          */
         public bool IsOnlyFinalTraces()
         {
-            if (this.IsDeadEnd()) // Если позиция тупиковая (нет продолжений)
+            if (this.IsDeadEnd()) // If the position is deadlock (no continuation)
                 return true;
 
             for (int i = 0; i < 4; i++)
@@ -46,7 +46,7 @@ namespace CheckersPolygon.Helpers
                 if (traces[i].Count > 0)
                     foreach (PathPoint point in traces[i])
                     {
-                        if (!point.finalPoint) // Если есть хоть одно не конечное продолжение
+                        if (!point.finalPoint) // If there is at least one non-finite extension
                             return false;
                     }
             }
@@ -54,11 +54,11 @@ namespace CheckersPolygon.Helpers
             return true;
         }
 
-        /* Если у позиции есть только мирные продолжения или их вовсе нет за исключением заблокированного направления
+        /* If the position has only peaceful continuations or none at all, with the exception of the blocked direction
          */
         public bool IsOnlyFinalTracesExcept(TurnDirection bannedDirection)
         {
-            if (this.IsDeadEnd()) // Если позиция тупиковая (нет продолжений)
+            if (this.IsDeadEnd()) // If the position is deadlock (no continuation)
                 return true;
 
             for (int i = 0; i < 4; i++)
@@ -66,7 +66,7 @@ namespace CheckersPolygon.Helpers
                 if (i != PathPoint.IndexOfDirection(bannedDirection))
                     foreach (PathPoint point in traces[i])
                     {
-                        if (!point.finalPoint) // Если есть хоть одно не конечное продолжение
+                        if (!point.finalPoint) // If there is at least one non-finite extension
                             return false;
                     }
             }
@@ -74,23 +74,23 @@ namespace CheckersPolygon.Helpers
             return true;
         }
 
-        /* Если у позиции есть только мирные продолжения или их нет совсем на заданном направлении
+        /* If the position has only peaceful continuations or there are none at all in the given direction
          */
         public bool IsOnlyFinalTraces(int index)
         {
-            if (this.IsDeadEnd()) // Если позиция тупиковая (нет продолжений)
+            if (this.IsDeadEnd()) // If the position is deadlock (no continuation)
                 return true;
 
             foreach (PathPoint point in traces[index])
             {
-                if (!point.finalPoint) // Если есть хоть одно не конечное продолжение
+                if (!point.finalPoint) // If there is at least one non-finite extension
                     return false;
             }
 
             return true;
         }
 
-        /* Является ли позиция тупиковой (не имеющей продолжений)
+        /* Is the position deadlock (not having continuations)
          */
         public bool IsDeadEnd()
         {
@@ -100,7 +100,7 @@ namespace CheckersPolygon.Helpers
                 return false;
         }
 
-        /* Возврат и установка значения по целочисленному индексу (индексатор)
+        /* Returning and setting the value on an integer index (indexer)
          */
         public List<PathPoint> this[int index]
         {
@@ -117,7 +117,7 @@ namespace CheckersPolygon.Helpers
             }
         }
 
-        /* Возврат и установка значения по индексу перечисления (индексатор)
+        /* Returning and setting the value by the index of the enumeration (indexer)
          */
         public List<PathPoint> this[TurnDirection direction]
         {
@@ -160,7 +160,7 @@ namespace CheckersPolygon.Helpers
             }
         }
 
-        /* Возврат и установка значения по строковому индексу (индексатор)
+        /* Return and set the value by a string index (indexer)
          */
         public List<PathPoint> this[string direction]
         {
@@ -219,7 +219,7 @@ namespace CheckersPolygon.Helpers
             }
         }
 
-        /* Преобразование направления хода в целочисленный индекс
+        /* Conversion of the direction of move to an integer index
          */
         public static int IndexOfDirection(TurnDirection direction)
         {
@@ -233,7 +233,7 @@ namespace CheckersPolygon.Helpers
             }
         }
 
-        /* Попытка найти направление со съедобными шашками
+        /* Trying to find a direction with edible checkers
          */
         public List<int> TryGetAggresiveDirections()
         {
@@ -253,7 +253,7 @@ namespace CheckersPolygon.Helpers
             return aggresiveDirections;
         }
 
-        /* Определение противоположного направления
+        /* Determining the opposite direction
          */
         public static TurnDirection GetOppositeDirection(TurnDirection direction)
         {

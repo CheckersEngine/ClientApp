@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace CheckersPolygon.Controllers
 {
-    /* Контроллер искусственного интеллекта
-     * Отвечает за расчет хода компьютера
+    /* Artificial Intelligence Controller
+     * Responsible for calculating the computer's moves
      */
     class AIController
     {
-        // Сторона, за которую играет компьютер
+        // The side played by the computer
         public CheckerSide side { get; private set; }
 
         public AIController(CheckerSide aiSide)
@@ -23,24 +23,24 @@ namespace CheckersPolygon.Controllers
             this.side = aiSide;
         }
 
-        /* Расчет хода компьютера
+        /* Calculating the computer's move
          */
         public void GetAiTurn(out BaseChecker selectedChecker, out PathPoint toPosition)
         {
             selectedChecker = null;
             toPosition = null;
-            List<PathPoint> possibleTurns = new List<PathPoint>(); // Список возможных ходов
+            List<PathPoint> possibleTurns = new List<PathPoint>(); // List of possible moves
 
-            // Построение списка возможных ходов
+            // Building a list of possible moves
             foreach (BaseChecker checker in side == CheckerSide.White ? Game.gameplayController.state.whiteCheckers :
                 Game.gameplayController.state.blackCheckers)
             {
                 PathPoint turn = checker.GetPossibleTurns();
-                if (!turn.IsDeadEnd()) // Если не тупиковая точка, добавляем маршрут в список
+                if (!turn.IsDeadEnd()) // If not a dead-end point, add a route to the list
                     possibleTurns.Add(turn);
             }
 
-            // Если ходы не найдены - проигрыш
+            // If no moves are found - a loss
             if (possibleTurns.Count == 0)
             {
                 selectedChecker = null;
@@ -48,16 +48,16 @@ namespace CheckersPolygon.Controllers
                 return;
             }
 
-            // Попытка найти агрессивные ходы
+            // Trying to find aggressive moves
             foreach (PathPoint chain in possibleTurns)
             {
                 List<int> eatableDirections = chain.TryGetAggresiveDirections();
                 if (eatableDirections.Count > 0)
                 {
-                    // Агрессивный ход найден
+                    // Aggressive move found
                     toPosition = chain;
 
-                    // Выясняем принадлежность хода шашке и выходим из метода
+                    // We find out the path belonging to the checker and leave the method
                     foreach (BaseChecker checker in side == CheckerSide.White ? Game.gameplayController.state.whiteCheckers :
                         Game.gameplayController.state.blackCheckers)
                     {
@@ -70,10 +70,10 @@ namespace CheckersPolygon.Controllers
                     }
                 }
             }
-            // "Съедобных" ходов нет, ищем мирные случайным образом
+            // There are no "edible" moves, we are looking for peaceful ones in a random way
             Random rnd = new Random();
             toPosition = possibleTurns[rnd.Next(possibleTurns.Count - 1)];
-            // Сопоставляем ход с шашкой
+            // Matching the move with the checker
             foreach (BaseChecker checker in side == CheckerSide.White ? Game.gameplayController.state.whiteCheckers :
                 Game.gameplayController.state.blackCheckers)
             {
@@ -87,8 +87,8 @@ namespace CheckersPolygon.Controllers
             return;
         }
 
-        /* Выбирает случайное напраление хода из доступных
-         * null - если ни одного варианта хода нет
+        /* Selects the random movement direction from available
+         * null - if none of the options are available
          */
         public PathPoint RandomPath(PathPoint point)
         {

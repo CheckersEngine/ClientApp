@@ -8,12 +8,12 @@ namespace CheckersPolygon
 {
     static class Program
     {
-        public static FormMenu mainMenu; // Главная форма
-        public static bool close = false; // Индикатор закрытия приложения
+        public static FormMenu mainMenu; // Main form
+        public static bool close = false; // Application close flag
 
 
         /// <summary>
-        /// Главная точка входа для приложения.
+        /// Application entry point.
         /// </summary>
         [STAThread]
         static void Main()

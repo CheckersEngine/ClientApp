@@ -15,43 +15,43 @@ using System.Windows.Forms;
 
 namespace CheckersPolygon.Controllers
 {
-    /* Класс, контролирующий весь процесс игры
-     * Включает в себя:
-     * - Первоначальную расстановку шашек при начале новой игры
-     * - Хранение, изменение, загрузку и сохранение состояния игровых обьектов (state)
-     * - Расчет хода на основе данных о взаимном расположении шашек на доске
-     * - Управление ходом игрока и компьютера
-     * - Обработка событий в соответствии с правилами игры 
+    /* Class that controls the whole process of the game
+     * Includes:
+     * - The initial arrangement of checkers at the beginning of a new game
+     * - Storing, changing, loading and saving the state of game objects (state)
+     * - Calculation of the progress based on the data on the relative position of the checkers on the board
+     * - Control of the progress of the player and computer
+     * - Handling of events in accordance with the rules of the game
      */
     internal sealed class GameplayController
     {
-        public BoardCell[,] board = new BoardCell[8, 8]; // Клетки игровой доски (активный игровой объект)
-        public BoardMarker[,] markers = new BoardMarker[2, 8]; // Метки клеток игровой доски (1,2,3,4.../A,B,C,D...)
-        public GameState state = new GameState(); // Состояние игровых обьектов (Шашек и др.)
-        public Size cellSize; // Размер ячейки (для поддержки масштабирования)
-        private Panel gameBoard; // Ссылка на игровое поле на форме
+        public BoardCell[,] board = new BoardCell[8, 8]; // Game board cells (active game object)
+        public BoardMarker[,] markers = new BoardMarker[2, 8]; // Labels of the cells of the game board (1,2,3,4 ... / A, B, C, D ...)
+        public GameState state = new GameState(); // The state of game objects (Checkers, etc.)
+        public Size cellSize; // Cell size (to support scaling)
+        private Panel gameBoard; // Link to the game board on the form
 
 
-        /* Первоначальная расстановка всех игровых объектов
-         * Регистрация их в списке отрисовки
+        /* The initial arrangement of all game objects
+         * Register them in the drawing list
          */
         public GameplayController(ref Panel gameBoard, bool phase, bool aiAffected)
         {
             this.state.phase = phase;
             this.gameBoard = gameBoard;
 
-            // Если намечается игра с компьютером
+            // If there is a game with a computer
             if (aiAffected)
             {
                 state.isAiControlled = true;
                 state.aiSide = phase == true ? CheckerSide.White : CheckerSide.Black;
             }
 
-            // Установка размера одной клетки
+            // Setting the size of a single cell
             cellSize.Width = gameBoard.Size.Width / 8;
             cellSize.Height = gameBoard.Size.Height / 8;
 
-            // Инициализация клеток доски
+            // Initializing the cells of the board
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
@@ -68,10 +68,10 @@ namespace CheckersPolygon.Controllers
                 }
             }
 
-            // Инициализация маркеров клеток (A, B, C, D ...)
+            // Initialization of cell markers (A, B, C, D ...)
             for (int i = 0; i < 8; i++)
             {
-                // Вертикальные маркеры
+                // Vertical markers
                 CheckersCoordinateSet position = new CheckersCoordinateSet(
                         new Point(2, i * cellSize.Height + (cellSize.Height / 2) - (cellSize.Height / 6)),
                         new Size(12, 12),
@@ -79,7 +79,7 @@ namespace CheckersPolygon.Controllers
                 markers[0, i] = new BoardMarker(Convert.ToChar('8' - i), position);
                 Game.drawingController.AddToDrawingList(markers[0, i]);
 
-                // Горизонтальные маркеры
+                // Horizontal markers
                 position = new CheckersCoordinateSet(
                         new Point(i * cellSize.Width + (cellSize.Width / 2) - (cellSize.Width / 6), 8 * cellSize.Height - 18),
                         new Size(12, 12),
@@ -88,32 +88,32 @@ namespace CheckersPolygon.Controllers
                 Game.drawingController.AddToDrawingList(markers[1, i]);
             }
 
-            // Первоначальная расстановка шашек
+            // Initial checkers placement
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 4; j++)
                 {
-                    // Определение координат и размеров шашки, находящейся сверху
+                    // Determination of the coordinates and dimensions of the checker on the top
                     CheckersCoordinateSet positionTop = new CheckersCoordinateSet(
                         new Point((2 * j + ((i + 1) % 2)) * cellSize.Width, i * cellSize.Height),
                         cellSize,
                         new Point(2 * j + ((i + 1) % 2), i));
 
-                    // Определение координат и размера шашки, находящейся снизу
+                    // Determining the coordinates and the size of the checker from the bottom
                     CheckersCoordinateSet positionBottom = new CheckersCoordinateSet(
                         new Point(7 * cellSize.Width - (((2 * j + ((i + 1) % 2)) * cellSize.Width)),
                         7 * cellSize.Height - i * cellSize.Height),
                         cellSize,
                         new Point(7 - (2 * j + ((i + 1) % 2)), 7 - i));
 
-                    // Инициализация белой шашки
+                    // Initializing a White Checker
                     BaseChecker checker = new Pawn(CheckerSide.White,
                         phase == true ? CheckerMoveDirection.Downstairs : CheckerMoveDirection.Upstairs,
                         phase == true ? positionTop : positionBottom);
                     state.whiteCheckers.Add(checker);
                     Game.drawingController.AddToDrawingList(checker);
 
-                    // Инициализация черной шашки
+                    // Initializing the Black Checker
                     checker = new Pawn(CheckerSide.Black,
                         phase == false ? CheckerMoveDirection.Downstairs : CheckerMoveDirection.Upstairs,
                         phase == false ? positionTop : positionBottom);
@@ -122,20 +122,20 @@ namespace CheckersPolygon.Controllers
                 }
             }
 
-            // Ход искуственного интеллекта
+            // The turn of artificial intelligence
             Game.drawingController.PrioritizedDraw();
         }
 
-        /* Изменение всех размеров всех игровых объектов
-         * Перерасстановка их на доске
+        /* Change all sizes of all game objects
+         * Resetting them on the board
          */
         public void OnResize()
         {
-            // Установка размера одной клетки
+            // Setting the size of a single cell
             cellSize.Width = gameBoard.Size.Width / 8;
             cellSize.Height = gameBoard.Size.Height / 8;
 
-            // Изменение размера и координат клеток доски
+            // Changing the size and coordinates of the cells of the board
             for (int i = 0; i < 8; i++)
             {
                 for (int j = 0; j < 8; j++)
@@ -145,7 +145,7 @@ namespace CheckersPolygon.Controllers
                 }
             }
 
-            // Изменение размера и координат маркеров доски
+            // Changing the size and coordinates of the board markers
             for (int i = 0; i < 8; i++)
             {
                 markers[0, i].Position.screenPosition = new Point(0,
@@ -154,7 +154,7 @@ namespace CheckersPolygon.Controllers
                     8 * cellSize.Height - 18);
             }
 
-            // Изменение размера и координат белых шашек
+            // Changing the size and coordinates of white checkers
             foreach (BaseChecker checker in state.whiteCheckers)
             {
                 checker.Position = new CheckersCoordinateSet(
@@ -163,7 +163,7 @@ namespace CheckersPolygon.Controllers
                     new Point(checker.Position.boardPosition.X, checker.Position.boardPosition.Y));
             }
 
-            // Изменение размера и координат черных шашек
+            // Change the size and coordinates of the black checkers
             foreach (BaseChecker checker in state.blackCheckers)
             {
                 checker.Position = new CheckersCoordinateSet(
@@ -172,13 +172,13 @@ namespace CheckersPolygon.Controllers
                     new Point(checker.Position.boardPosition.X, checker.Position.boardPosition.Y));
             }
 
-            // Перерисовка изображения
+            // Redrawing the image
             Game.drawingController.PrioritizedDraw();
         }
 
-        #region Расчет хода и передвижение шашек
+        #region Calculation of movement and "movement of checkers" process
 
-        /* При нажатии на игровую доску вызывается данный метод
+        /* When you click on the game board, this method is called
          */
         public void OnClick(MouseEventArgs mouseArgs)
         {
@@ -186,16 +186,16 @@ namespace CheckersPolygon.Controllers
             BaseChecker previouslySelectedChecker = null;
             BaseChecker currentSelectedChecker = null;
 
-            // Попытка найти выбранную шашку
+            // Trying to find the selected checker
             anyoneSelected = TryFindSelectedCheckers(mouseArgs, ref previouslySelectedChecker, ref currentSelectedChecker);
 
-            // Если шашка не была выбрана
+            // If the checker was not selected
             if (!anyoneSelected)
             {
-                // Если на прошлом шаге была выбрана шашка 
+                // If the checker was selected at the last step
                 if (previouslySelectedChecker != null)
                 {
-                    // Попытка хода на заданную позицию
+                    // Attempt to move to a given position
                     Point toBoardPosition = new Point()
                     {
                         X = mouseArgs.X / cellSize.Width,
@@ -203,12 +203,12 @@ namespace CheckersPolygon.Controllers
                     };
                     DoMovement(previouslySelectedChecker, toBoardPosition);
 
-                    // Проверка условий победы и поражения
+                    // Checking the conditions of victory and defeat
                     CheckVictoryConditions();
                 }
                 else
                 {
-                    // Кликнул на пустое поле
+                    // Clicked on an empty field
                     DeselectAllCheckers();
                     state.activeChecker = null;
                     state.activeCheckerPathPoint = null;
@@ -216,8 +216,8 @@ namespace CheckersPolygon.Controllers
             }
             else
             {
-                // Выбрана шашка
-                // Предотвратить ход другой шашкой (кроме выбранной)
+                // The checker is selected
+                // Prevent the move by another checker (other than the selected one)
                 if (state.activeChecker != null)
                     if (state.activeChecker != currentSelectedChecker)
                     {
@@ -239,11 +239,11 @@ namespace CheckersPolygon.Controllers
                     }
                 }
 
-                // Фильтрация ходов (если есть возможность что то съесть, заблокировать "несъедобные" ходы)
+                // Filtering moves (if you can eat something, block "inedible" moves)
                 if (!aggressive)
                 {
                     ClearHighlighting();
-                    HighlightPossibleTurns(currentSelectedChecker); // Подсветить ее
+                    HighlightPossibleTurns(currentSelectedChecker); // Highlight it
                 }
                 else
                 {
@@ -265,15 +265,15 @@ namespace CheckersPolygon.Controllers
                 }
             }
 
-            // Перерисовать сцену
+            // Redraw the scene
             Game.drawingController.PrioritizedDraw();
 
-            // Очистка памяти от объектов, порожденных активным вычислением съедобных вариантов
+            // Clearing memory from objects generated by active computation of edible options
             GC.Collect();
         }
 
-        /* Ход искуственного интеллекта
-         * Расчет ходов, проверка условий выигрыша и поражения
+        /* The course of artificial intelligence
+         * Calculation of moves, verification of conditions for winning and losing
          */
         public void AiTurn()
         {
@@ -281,13 +281,13 @@ namespace CheckersPolygon.Controllers
             PathPoint toPoint;
             AIController ai = new AIController(state.aiSide);
 
-            // Попытка найти выбранную шашку
+            // Trying to find the selected checker
             ai.GetAiTurn(out selectedChecker, out toPoint);
 
-            // Если шашка была выбрана
+            // If the checker was selected
             if (selectedChecker != null)
             {
-                // Попытка хода на заданную позицию
+                // Attempt to move to a given position
                 do
                 {
                     PathPoint newPath = ai.RandomPath(toPoint);
@@ -301,31 +301,31 @@ namespace CheckersPolygon.Controllers
                     toPoint = newPath;
                 }
                 while (state.activeChecker != null);
-                // Проверка условий победы и поражения
+                // Checking the conditions of victory and defeat
                 CheckVictoryConditions();
 
             }
             else
             {
-                // Проверка условий победы и поражения
+                // Checking the conditions of victory and defeat
                 CheckVictoryConditions();
             }
 
-            // Перерисовать сцену
+            // Redraw the scene
             Game.drawingController.PrioritizedDraw();
 
-            // Очистка памяти от объектов, порожденных активным вычислением съедобных вариантов
+            // Clearing memory from objects generated by active computation of edible options
             GC.Collect();
         }
 
-        /* Проверка условий выигрыша/проигрыша всех сторон
+        /* Checking win / loss conditions for all sides
          */
         private void CheckVictoryConditions()
         {
             bool toilet = true;
             if (state.whiteCheckers.Count == 0)
             {
-                // Победа черных
+                // Black's victory
                 Game.drawingController.PrioritizedDraw();
                 Game.userLogController.WriteMessage("Черные победили!");
                 FormVictory victoryDialog = new FormVictory(false, false);
@@ -333,7 +333,7 @@ namespace CheckersPolygon.Controllers
             }
             else if (state.blackCheckers.Count == 0)
             {
-                // Победа белых
+                // White's victory
                 Game.drawingController.PrioritizedDraw();
                 Game.userLogController.WriteMessage("Белые победили!");
                 FormVictory victoryDialog = new FormVictory(true, false);
@@ -341,26 +341,26 @@ namespace CheckersPolygon.Controllers
             }
             else
             {
-                // Проверка на "сортир"
+                // Check for "toilet" (no more moves)
                 foreach (BaseChecker checker in state.turn == CheckerSide.White ? state.whiteCheckers : state.blackCheckers)
                 {
                     if (!checker.GetPossibleTurns().IsDeadEnd())
                         toilet = false;
                 }
 
-                // Если поставлен "сортир"
+                // If no more moves
                 if (toilet)
                 {
                     if (state.turn == CheckerSide.White)
                     {
-                        // Сортир белым
+                        // White lose
                         Game.userLogController.WriteMessage("Белые позорно проиграли!");
                         FormVictory victoryDialog = new FormVictory(true, true);
                         victoryDialog.ShowDialog();
                     }
                     else
                     {
-                        // Сортир черным
+                        // Black lose
                         Game.userLogController.WriteMessage("Черные позорно проиграли!");
                         FormVictory victoryDialog = new FormVictory(false, true);
                         victoryDialog.ShowDialog();
@@ -369,20 +369,20 @@ namespace CheckersPolygon.Controllers
             }
         }
 
-        /* Попытка найти выделенные шашки после нажатия кнопки мыши
+        /* Trying to find the selected checkers after clicking the mouse button
          */
         private bool TryFindSelectedCheckers(MouseEventArgs mouseArgs, ref BaseChecker previouslySelectedChecker, ref BaseChecker currentSelectedChecker)
         {
             bool anyoneSelected = false;
-            if (state.turn == CheckerSide.White) // Соблюдение очередности хода
+            if (state.turn == CheckerSide.White) // Compliance with the order of the turn
             {
                 foreach (BaseChecker whiteChecker in state.whiteCheckers)
                 {
-                    // Пометка прежде выбранной шашки
+                    // Mark previously selected checker
                     if (whiteChecker.selected)
                         previouslySelectedChecker = whiteChecker;
 
-                    // Пометка только что выбранной шашки
+                    // Marking the checker just selected
                     Rectangle checkerCoord = new Rectangle(whiteChecker.Position.screenPosition, whiteChecker.Position.drawableSize);
                     if (checkerCoord.Contains(mouseArgs.Location))
                     {
@@ -396,11 +396,11 @@ namespace CheckersPolygon.Controllers
             {
                 foreach (BaseChecker blackChecker in state.blackCheckers)
                 {
-                    // Пометка прежде выбранной шашки
+                    // Mark previously selected checker
                     if (blackChecker.selected)
                         previouslySelectedChecker = blackChecker;
 
-                    // Пометка только что выбранной шашки
+                    // Marking the checker just selected
                     Rectangle checkerCoord = new Rectangle(blackChecker.Position.screenPosition, blackChecker.Position.drawableSize);
                     if (checkerCoord.Contains(mouseArgs.Location))
                     {
@@ -414,32 +414,32 @@ namespace CheckersPolygon.Controllers
         }
 
 
-        /* Попытка движения шашки
-         * Расчет хода
+        /* Trying to move checker
+         * Calculating the movement
          * ------------------------------------------------------------------------------
          */
         private void DoMovement(BaseChecker previouslySelectedChecker, Point toPosition)
         {
             string logMessage = "Ход ";
             PathPoint turns;
-            // Снятие выделения с шашек
+            // Erase highlighting on all checkers
             DeselectAllCheckers();
 
-            // Если ход не начался
+            // If the move does not start
             if (state.activeCheckerPathPoint == null)
             {
-                turns = previouslySelectedChecker.GetPossibleTurns(); // Расчет всех возможных цепочек ходов для шашки
+                turns = previouslySelectedChecker.GetPossibleTurns(); // Calculation of all possible chains of moves for a checker
                 state.activeCheckerPathPoint = turns;
             }
             else
-                turns = state.activeCheckerPathPoint; // Продолжение хода
+                turns = state.activeCheckerPathPoint; // Continuation of the movement
 
-            // Если позиция не тупиковая
+            // If the position is not a deadlock
             if (!turns.IsDeadEnd())
             {
                 state.activeChecker = previouslySelectedChecker;
 
-                // Ход
+                // Movement
                 for (int i = 0; i < 4; i++)
                     foreach (PathPoint point in turns[i])
                     {
@@ -451,25 +451,25 @@ namespace CheckersPolygon.Controllers
                                 Y = previouslySelectedChecker.Position.boardPosition.Y
                             };
                             logMessage += previouslySelectedChecker.GetPrintablePosition() + " на ";
-                            // Перемещение шашки на выбранную позицию
+                            // Moving the checker to the selected position
                             previouslySelectedChecker.MoveTo(new Point(toPosition.X, toPosition.Y));
                             logMessage += previouslySelectedChecker.GetPrintablePosition();
                             Game.userLogController.WriteMessage(logMessage);
-                            // Определение направления хода
+                            // Defining the direction of movement
                             Point moveDirection = new Point()
                             {
                                 X = toPosition.X - fromPosition.X > 0 ? 1 : -1,
                                 Y = toPosition.Y - fromPosition.Y > 0 ? 1 : -1
                             };
 
-                            // Определение съеденных шашек
+                            // Determination of the eaten checkers
                             TryEatEnemyCheckers(previouslySelectedChecker, toPosition, fromPosition, moveDirection);
 
-                            // Если шашка может стать дамкой
+                            // If the checker can become a king
                             if (previouslySelectedChecker is Pawn && previouslySelectedChecker.Position.boardPosition.Y ==
                                 (previouslySelectedChecker.Direction == CheckerMoveDirection.Upstairs ? 0 : 7))
                             {
-                                // Замена шашки дамкой
+                                // Replacement of a checker by a king
                                 King newKing = new King(previouslySelectedChecker.Side, previouslySelectedChecker.Position);
                                 if (previouslySelectedChecker.Side == CheckerSide.White)
                                 {
@@ -482,18 +482,18 @@ namespace CheckersPolygon.Controllers
                                     state.blackCheckers.Add(newKing);
                                 }
 
-                                // Добавление в список отрисовки
+                                // Adding to the list of drawings
                                 Game.drawingController.AddToDrawingList(newKing);
                                 previouslySelectedChecker.Destroy();
 
-                                // Расчет дальнейшего пути для дамки
+                                // Calculation of the further path for a king
                                 state.activeChecker = newKing;
                                 if (state.activeCheckerPathPoint.afterAggression)
                                 {
                                     state.activeCheckerPathPoint = newKing.GetPossibleTurns(PathPoint.GetOppositeDirection(GetDirection(moveDirection)));
                                     if (state.activeCheckerPathPoint.TryGetAggresiveDirections().Count == 0)
                                     {
-                                        // Конец хода
+                                        // End of turn
                                         EndTurn();
                                         return;
                                     }
@@ -511,15 +511,15 @@ namespace CheckersPolygon.Controllers
                                 }
                             }
 
-                            // Найти ту точку, в которую он сходил
-                            // Просчитать, возможно ли оттуда продолжение хода
+                            // Find the point he went to
+                            // Calculate whether it is possible to continue the movement
                             foreach (PathPoint waypoint in state.activeCheckerPathPoint[GetDirection(moveDirection)])
                             {
                                 if (waypoint.Position == toPosition)
                                 {
                                     if (!waypoint.IsOnlyFinalTraces())
                                     {
-                                        // Продолжение хода
+                                        // Continuation of the movement
                                         state.activeCheckerPathPoint = waypoint;
                                         DeselectAllCheckers();
                                         state.activeChecker.selected = true;
@@ -527,7 +527,7 @@ namespace CheckersPolygon.Controllers
                                     }
                                     else
                                     {
-                                        // Конец хода
+                                        // End of turn
                                         EndTurn();
                                     }
                                 }
@@ -538,7 +538,7 @@ namespace CheckersPolygon.Controllers
             }
             else
             {
-                // Тупиковая позиция, конец хода
+                // Deadlock position, end of turn
                 if (state.activeChecker != null || state.activeCheckerPathPoint != null)
                 {
                     state.activeChecker = null;
@@ -547,7 +547,7 @@ namespace CheckersPolygon.Controllers
             }
         }
 
-        /* Конец хода, смена ходящего игрока
+        /* End of turn, change of moving player
          */
         private void EndTurn()
         {
@@ -565,27 +565,27 @@ namespace CheckersPolygon.Controllers
                 Game.userLogController.WriteMessage("Ход белых");
             }
 
-            // Если игра против компьютера
+            // If the game is against the computer
             if (state.isAiControlled)
             {
                 Game.drawingController.PrioritizedDraw();
-                // Ход компьютера
+                // Computer's turn
                 if (state.aiSide == state.turn)
                     AiTurn();
             }
         }
 
-        /* Попытка поедания всех встретившихся на пути шашек
-         * Контроль за конечным результатом хода
+        /* Trying to eat all the checkers on the way
+         * Control over the end result of the course
          */
         private void TryEatEnemyCheckers(BaseChecker previouslySelectedChecker, Point toPosition, Point fromPosition, Point moveDirection)
         {
-            List<BaseChecker> eatenCheckers = new List<BaseChecker>(); // Список всех съеденных шашек
+            List<BaseChecker> eatenCheckers = new List<BaseChecker>(); // A list of all the eaten checkers
             for (int i = fromPosition.X + moveDirection.X; i != toPosition.X; i += moveDirection.X)
             {
                 for (int j = fromPosition.Y + moveDirection.Y; j != toPosition.Y; j += moveDirection.Y)
                 {
-                    // добавление всех встреченных за ход шашек противника в "съеденные"
+                    // Addition of all the opponent's checkers met in the course of the "eaten"
                     if (previouslySelectedChecker.Side == CheckerSide.Black)
                     {
                         foreach (BaseChecker whiteChecker in state.whiteCheckers)
@@ -611,7 +611,7 @@ namespace CheckersPolygon.Controllers
                 }
             }
 
-            // Уничтожение всех съеденных шашек
+            // Destruction of all eaten checkers
             foreach (BaseChecker eatenChecker in eatenCheckers)
             {
                 if (eatenChecker.Side == CheckerSide.White) state.whiteCheckers.Remove(eatenChecker);
@@ -622,7 +622,7 @@ namespace CheckersPolygon.Controllers
             eatenCheckers.Clear();
         }
 
-        /* Подсветка всех возможных ходов
+        /* Highlighting of all possible moves
          */
         private void HighlightPossibleTurns(BaseChecker currentSelectedChecker)
         {
@@ -640,7 +640,7 @@ namespace CheckersPolygon.Controllers
             }
         }
 
-        /* Отмена подсветки ячеек
+        /* Clear cells highlighting
          */
         private void ClearHighlighting()
         {
@@ -649,7 +649,7 @@ namespace CheckersPolygon.Controllers
                     board[j, i].Highlighted = false;
         }
 
-        /* Выбор шашки (включение подсветки)
+        /* Select a checker (highlighting it)
          */
         private void SelectChecker(BaseChecker checker)
         {
@@ -670,7 +670,7 @@ namespace CheckersPolygon.Controllers
             }
         }
 
-        /* Отмена выбора шашек
+        /* Undo checker selection
          */
         private void DeselectAllCheckers()
         {
@@ -683,7 +683,7 @@ namespace CheckersPolygon.Controllers
             ClearHighlighting();
         }
 
-        /* Определение направления по вектору
+        /* Determination of the direction by vector
          */
         private TurnDirection GetDirection(Point directionVector)
         {
@@ -701,9 +701,9 @@ namespace CheckersPolygon.Controllers
 
         #endregion
 
-        #region Сохранение и загрузка игры
+        #region Saveing and loading the game
 
-        /* Сохранение состояние игры в файл, сериализация
+        /* Saving the game state to a file, serialization
          */
         public void SaveState(string filename)
         {
@@ -713,12 +713,12 @@ namespace CheckersPolygon.Controllers
             stream.Close();
         }
 
-        /* Загрузка состояния игры из файла, десериализация
+        /* Loading the state of the game from the file, deserialization
          */
         public void LoadState(string filename)
         {
-            // Предварительная отвязка всех шашек от списка отрисовки
-            // и удаление их из перечня шашек
+            // Preliminary unbinding of all checkers from the drawing list
+            // and removing them from the checkers list
             foreach (BaseChecker checker in state.whiteCheckers)
                 checker.Destroy();
             foreach (BaseChecker checker in state.blackCheckers)
@@ -726,19 +726,19 @@ namespace CheckersPolygon.Controllers
             state.whiteCheckers.Clear();
             state.blackCheckers.Clear();
 
-            // Чтение состояния из файла
+            // Reading a state from a file
             FileStream stream = File.OpenRead(filename);
             BinaryFormatter formatter = new BinaryFormatter();
             this.state = (GameState)formatter.Deserialize(stream);
             stream.Close();
 
-            // Добавление шашек в список отрисовки
+            // Adding checkers to the drawing list
             foreach (BaseChecker checker in state.whiteCheckers)
                 Game.drawingController.AddToDrawingList(checker);
             foreach (BaseChecker checker in state.blackCheckers)
                 Game.drawingController.AddToDrawingList(checker);
 
-            // Перерисовка сцены
+            // Redrawing the scene
             Game.drawingController.PrioritizedDraw();
         }
         #endregion

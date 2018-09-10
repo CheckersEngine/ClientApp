@@ -11,27 +11,27 @@ using CheckersPolygon.Controllers;
 
 namespace CheckersPolygon.GameObjects
 {
-    /* Обычная шашка, ходит на 1 клетку, только в "своем" направлении, если только нет съедобных вариантов
+    /* Usual checker, walks on 1 cage, only forward, unless there are edible options
      */
     [Serializable]
     class Pawn : BaseChecker
     {
         public Pawn(CheckerSide side, CheckerMoveDirection direction, CheckersCoordinateSet position) : base(side, direction, position)
         {
-            this.TurnRange = 1; // Ходит только на 1 клетку
+            this.TurnRange = 1; // Only walks 1 cell
         }
 
-        /* Получение списка возможных ходов шашки с учетом особенностей ее хода
+        /* Obtaining a list of possible moves of the checker taking into account the features of its move
          */
         public override PathPoint GetPossibleTurns(TurnDirection? bannedDirection)
         {
-            // Находит возможные ходы с помощью универсального класса Pathfinder
+            // Find possible moves using the universal Pathfinder class
             Pathfinder pathfinder = new Pathfinder();
             PathPoint turns = pathfinder.GetTurns(Position.boardPosition, this.TurnRange, Side, bannedDirection);
-            // Ограничение хода с учетом "съедобных" ходов
+            // Restriction of a movement taking into account "edible" moves
             if (Direction == CheckerMoveDirection.Upstairs)
             {
-                // Ограничение на ходы снизу
+                // Restriction on bottom moves
                 if (turns[TurnDirection.BottomLeft].Count > 0)
                 {
                     if (turns[TurnDirection.BottomLeft][0].finalPoint)
@@ -45,7 +45,7 @@ namespace CheckersPolygon.GameObjects
             }
             else
             {
-                // Ограничение на ходы сверху
+                // Restriction on moves from above
                 if (turns[TurnDirection.TopLeft].Count > 0)
                 {
                     if (turns[TurnDirection.TopLeft][0].finalPoint)
@@ -61,7 +61,7 @@ namespace CheckersPolygon.GameObjects
             return turns;
         }
 
-        /* Отрисовка шашки
+        /* Drawing Checkers
          */
         public override void Draw(Graphics graph)
         {
@@ -72,7 +72,7 @@ namespace CheckersPolygon.GameObjects
                 Position.screenPosition.X + Position.drawableSize.Width / 5, Position.screenPosition.Y + Position.drawableSize.Height / 5,
                 Position.drawableSize.Width - (Position.drawableSize.Width / 5 * 2), Position.drawableSize.Height - (Position.drawableSize.Height / 5 * 2));
 
-            if (selected) // Если шашка выбрана
+            if (selected) // If the checker is selected
                 graph.DrawEllipse(new Pen(Constants.highlightCheckerColor, 4),
                     Position.screenPosition.X, Position.screenPosition.Y,
                     Position.drawableSize.Width, Position.drawableSize.Height);

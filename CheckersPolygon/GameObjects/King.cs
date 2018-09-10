@@ -10,24 +10,24 @@ using System.Drawing;
 
 namespace CheckersPolygon.GameObjects
 {
-    /* Дамка, ходит на любые расстояния в любую сторону
+    /* King, walks to any distance in any direction
      */
     [Serializable]
     class King : BaseChecker
     {
         public King(CheckerSide side, CheckersCoordinateSet position) : base(side, CheckerMoveDirection.Both, position)
         {
-            this.TurnRange = 8; // Ход на 8 клеток
+            this.TurnRange = 8; // 8-cell move
         }
 
-        /* Отрисовка дамки
+        /* Drawing a king
          */
         public override void Draw(Graphics graph)
         {
             graph.FillEllipse(new SolidBrush(Side == CheckerSide.White ? Constants.whiteCheckerColor : Constants.blackCheckerColor),
                 Position.screenPosition.X, Position.screenPosition.Y,
                 Position.drawableSize.Width, Position.drawableSize.Height);
-            // Корона дамки
+            // Crown of the King
             Point[] crown = new Point[]
                 {
                     new Point(Position.screenPosition.X + Position.drawableSize.Width / 5, 
@@ -46,7 +46,7 @@ namespace CheckersPolygon.GameObjects
                     Position.screenPosition.Y + Position.drawableSize.Height / 2 - Position.drawableSize.Height / 4),
                 };
             graph.FillPolygon(Brushes.Black, crown);
-            if (selected) // Выделение дамки, если выбрана
+            if (selected) // Highlighting of a king, if selected
                 graph.DrawEllipse(new Pen(Constants.highlightCheckerColor, 4),
                     Position.screenPosition.X, Position.screenPosition.Y,
                     Position.drawableSize.Width, Position.drawableSize.Height);

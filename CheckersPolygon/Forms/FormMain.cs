@@ -13,22 +13,22 @@ using System.Windows.Forms;
 
 namespace CheckersPolygon
 {
-    /* Главная игровая форма
+    /* Main game form
      */
     public partial class FormMain : Form
     {
-        bool phase = false; // Фаза игры, от нее зависит, какие шашки будут вверху, а какие внизу
+        bool phase = false; // The phase of the game, it depends on it, which checkers will be at the top and which ones at the bottom
         public bool aiAffected = false;
 
         public FormMain(bool aiAffected)
         {
             InitializeComponent();
-            Game.InitEngine(ref this.gameBoard, ref this.rtbUserLog, phase, aiAffected); // Инициализация игрового движка
+            Game.InitEngine(ref this.gameBoard, ref this.rtbUserLog, phase, aiAffected); // Initializing the game engine
         }
 
         private void FormMain_Load(object sender, EventArgs e)
         {
-            //Game.InitEngine(ref this.gameBoard, ref this.rtbUserLog, phase, aiAffected); // Инициализация игрового движка
+            //Game.InitEngine(ref this.gameBoard, ref this.rtbUserLog, phase, aiAffected); // Initializing the game engine
         }
 
         private void gameBoard_Click(object sender, EventArgs e)
@@ -36,7 +36,7 @@ namespace CheckersPolygon
 
         }
 
-        /* Перерисовка изображения
+        /* Redrawing the image
          */
         private void gameBoard_Paint(object sender, PaintEventArgs e)
         {
@@ -48,42 +48,42 @@ namespace CheckersPolygon
 
         }
 
-        /* Перерисовка изображения при изменении размеров формы
+        /* Redraw the image when changing the size of the form
          */
         private void FormMain_Resize(object sender, EventArgs e)
         {
             Game.gameplayController.OnResize();
         }
 
-        /* Обработка нажатия клавиши мыши на игровом поле
+        /* Handling the mouse button on the game board
          */
         private void gameBoard_MouseClick(object sender, MouseEventArgs e)
         {
             Game.gameplayController.OnClick(e);
         }
 
-        /* Закрытие главного меню в случае закрытия этой формы
+        /* Closing the main menu when this form is closed
          */
         private void FormMain_FormClosed(object sender, FormClosedEventArgs e)
         {
             Program.mainMenu.Close();
         }
 
-        /* Вызов меню по щелчку на кнопке
+        /* Calling the menu by clicking on the button
          */
         private void btnMenu_Click(object sender, EventArgs e)
         {
             FormMenu menu = new FormMenu(false);
             DialogResult result = menu.ShowDialog();
 
-            // Обработка результата
+            // Processing the result
             switch (result)
             {
-                // Продолжить
+                // Continue
                 case DialogResult.Cancel:
                     break;
-                
-                // Новая игра
+
+                // A new game
                 case DialogResult.OK:
                     phase = !phase;
                     Game.InitEngine(ref gameBoard, ref rtbUserLog, phase, menu.aiAffected);
@@ -95,7 +95,7 @@ namespace CheckersPolygon
                     GC.Collect();
                     break;
 
-                // Сохранить
+                // Save game
                 case DialogResult.Abort:
                     SaveFileDialog saveDialog = new SaveFileDialog();
                     saveDialog.Filter = "Polygon checkers save file|*.plchckr";
@@ -105,7 +105,7 @@ namespace CheckersPolygon
                     }
                     break;
 
-                // Загрузить
+                // Load game
                 case DialogResult.Retry:
                     OpenFileDialog openDialog = new OpenFileDialog();
                     openDialog.Filter = "Polygon checkers save file|*.plchckr";

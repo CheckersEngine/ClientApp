@@ -9,16 +9,16 @@ using System.Windows.Forms;
 
 namespace CheckersPolygon.Controllers
 {
-    /* Главный класс игры
-     * Содержит все контроллеры
+    /* The main class of the game
+     * Contains all controllers
      */
     static class Game
     {
-        public static DrawingController drawingController; // Контроллер отрисовки игровой сцены
-        public static GameplayController gameplayController; // Контроллер игрового процесса
-        public static UserLogController userLogController; // Контроллер панели информирования
+        public static DrawingController drawingController; // Game scene rendering controller
+        public static GameplayController gameplayController; // Game Processor
+        public static UserLogController userLogController; // Information Panel Controller
 
-        /* Запуск движка, должен всегда выполняться перед какими- либо другими действиями с движком
+        /* Starting the engine should always be performed before any other actions with the engine
          */
         public static void InitEngine(ref Panel gameBoard, ref RichTextBox userLog, bool phase, bool aiAffected)
         {
@@ -27,7 +27,7 @@ namespace CheckersPolygon.Controllers
             userLogController = new UserLogController(ref userLog);
         }
 
-        /* Сохранение состояния игры
+        /* Saving the state of the game
          */
         public static void Save(string filename)
         {
@@ -42,7 +42,7 @@ namespace CheckersPolygon.Controllers
             }
         }
 
-        /* Загрузка состояния игры
+        /* Loading the game state
          */
         public static void Load(string filename)
         {

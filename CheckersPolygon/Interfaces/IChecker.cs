@@ -9,27 +9,27 @@ using System.Threading.Tasks;
 
 namespace CheckersPolygon.Interfaces
 {
-    /* Интерфейс всего, что является шашкой
+    /* Common interface of every checker entity
      */
     interface IChecker
     {
-        // Сторона шашки (Черные/Белые)
+        // Checker side (black/white)
         CheckerSide Side { get; set; }
 
-        // Направление хода (Вверх/Вниз/В обе стороны)
+        // Turn direction (upward/downward/both directions)
         CheckerMoveDirection Direction { get; set; }
         
-        // Максимальная длина хода в клетках
+        // Maximum turn range
         byte TurnRange { get; set; }
 
         // -----------------------------------------------------------------------------------------------------
-        // Получение списка всех возможных ходов
+        // Getting list of all possible turns
         PathPoint GetPossibleTurns(TurnDirection? bannedDirection);
 
-        // Размещение на указанной позиции на доске
+        // Movement
         void MoveTo(Point position);
 
-        // Уничтожение объекта
+        // Self-destroying
         void Destroy();
     }
 }

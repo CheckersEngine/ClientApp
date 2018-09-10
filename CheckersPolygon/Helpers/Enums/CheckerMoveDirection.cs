@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace CheckersPolygon.Helpers.Enums
 {
-    /* Возможные направления хода
+    /* Possible directions of the course
      */
     enum CheckerMoveDirection
     {
-        Upstairs = 1, // Вверх
-        Downstairs = -1, // Вниз
-        Both = 2 // В обе стороны (Дамка)
+        Upstairs = 1, // Up
+        Downstairs = -1, // Down
+        Both = 2 // In both directions (King)
     }
 }

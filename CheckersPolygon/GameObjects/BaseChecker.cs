@@ -11,15 +11,15 @@ using CheckersPolygon.Controllers;
 
 namespace CheckersPolygon.GameObjects
 {
-    /* Базовый класс, задающий общее поведение шашки
+    /* The base class that defines the general behavior of the checker
      */
     [Serializable]
     class BaseChecker : IDrawable, IChecker
     {
-        /* Определяется:
-         * - Стороной (Черные/Белые)
-         * - Направлением хода (Вверх/Вниз/В обе стороны (у дамки))
-         * - Комбинированной позицией (Позиция на экране, размер на экране, позиция на доске)
+        /* Determined by:
+         * - Side (Black / White)
+         * - Direction of travel (Up / Down / In both directions (king))
+         * - Combined position (Position on the screen, size on the screen, position on the board)
          */
         public BaseChecker(CheckerSide side, CheckerMoveDirection direction, CheckersCoordinateSet position)
         {
@@ -29,21 +29,21 @@ namespace CheckersPolygon.GameObjects
             this.Direction = direction;
         }
 
-        public byte ZOrder { get; set; } // Слой отрисовки
-        public CheckersCoordinateSet Position { get; set; } // Комбинированная позиция шашки
-        public CheckerSide Side { get; set; } // Сторона шашки (ч/б)
-        public CheckerMoveDirection Direction { get; set; } // Направление хода шашки
-        public byte TurnRange { get; set; } // Максимальное расстояние хода шашки
-        public bool selected; // Выбрана ли шашка
+        public byte ZOrder { get; set; } // The rendering layer
+        public CheckersCoordinateSet Position { get; set; } // Combined checker position
+        public CheckerSide Side { get; set; } // Checker side (b / w)
+        public CheckerMoveDirection Direction { get; set; } // The direction of the checker's move
+        public byte TurnRange { get; set; } // Maximum distance of the move of the checker
+        public bool selected; // Checker selected
 
-        /* Уничтожение шашки, отписка от списка для отрисовки
+        /* Destroying a checker, unsubscribing from a list for rendering
          */
         public void Destroy()
         {
             Game.drawingController.DeleteFromDrawingList(this);
         }
 
-        /* Отрисовка шашки
+        /* Drawing Checkers
          */
         public virtual void Draw(Graphics graph)
         {
@@ -51,13 +51,13 @@ namespace CheckersPolygon.GameObjects
                 Position.screenPosition.X, Position.screenPosition.Y,
                 Position.drawableSize.Width, Position.drawableSize.Height);
 
-            if (selected) // Выделение шашки, если она выбрана
-            graph.DrawEllipse(new Pen(Constants.highlightCheckerColor, 4),
+            if (selected) // Select a checker if it is selected
+                graph.DrawEllipse(new Pen(Constants.highlightCheckerColor, 4),
                 Position.screenPosition.X, Position.screenPosition.Y,
                 Position.drawableSize.Width, Position.drawableSize.Height);
         }
 
-        /* Перемещение шашки на заданную позицию
+        /* Moving the checker to the specified position
          */
         public void MoveTo(Point boardPosition)
         {
@@ -67,7 +67,7 @@ namespace CheckersPolygon.GameObjects
             this.Position.screenPosition.Y = this.Position.drawableSize.Height * boardPosition.Y;
         }
 
-        /* Позиция в координатах меток на доске (пр. C8, A2, H5, ...)
+        /* Position in the coordinates of the marks on the board (eq. C8, A2, H5, ...)
          */
         public string GetPrintablePosition()
         {
@@ -76,14 +76,14 @@ namespace CheckersPolygon.GameObjects
                 (char)('A' + Convert.ToByte(this.Position.boardPosition.X))));
         }
 
-        /* Список возможных ходов для шашки
+        /* List of possible moves for the checker
          */
         public PathPoint GetPossibleTurns()
         {
             return GetPossibleTurns(null);
         }
 
-        /* Список возможных ходов для шашки с отсеченной диагональю
+        /* List of possible moves for a checker with a cut off diagonal
          */
         public virtual PathPoint GetPossibleTurns(TurnDirection? bannedDirection)
         {

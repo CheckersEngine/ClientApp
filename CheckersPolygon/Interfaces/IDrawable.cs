@@ -8,17 +8,17 @@ using System.Threading.Tasks;
 
 namespace CheckersPolygon.Interfaces
 {
-    /* Интерфейс всего, что нужно отрисовывать
+    /* Common interface of every object that needs to be drawn
      */
     interface IDrawable
     {
-        // Индекс слоя отрисовки (0 - рисуется в первую очередь, 1 - во вторую, ... и т.д.)
+        // Index of the drawing layer (0 - drawn first, 1 - second, ... etc.)
         Byte ZOrder { get; set; }
 
-        // Комбинированная позиция объекта
+        // Combined position of the object
         CheckersCoordinateSet Position { get; set; }
 
-        // Отрисовка объекта
+        // Object rendering
         void Draw(Graphics graph);
     }
 }

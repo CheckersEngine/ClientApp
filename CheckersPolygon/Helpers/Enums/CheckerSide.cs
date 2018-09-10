@@ -6,11 +6,11 @@ using System.Threading.Tasks;
 
 namespace CheckersPolygon.Helpers.Enums
 {
-    /* Сторона шашки
+    /* Side of checker
      */
     enum CheckerSide
     {
-        White, // Белая
-        Black // Черная
+        White, // White
+        Black // Black
     }
 }

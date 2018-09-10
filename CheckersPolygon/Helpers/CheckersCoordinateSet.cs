@@ -8,14 +8,14 @@ using System.Windows.Forms;
 
 namespace CheckersPolygon.Helpers
 {
-    /* Комбинированные координаты объекта
+    /* Combined coordinates of the object
      */
     [Serializable]
     public class CheckersCoordinateSet
     {
-        public Point screenPosition; // Позиция на экране
-        public Size drawableSize; // Размер для отрисовки
-        public Point boardPosition; // Позиция на игровой доске
+        public Point screenPosition; // Position on the screen
+        public Size drawableSize; // Size for rendering
+        public Point boardPosition; // Position on the game board
 
         public CheckersCoordinateSet()
         {

@@ -9,15 +9,15 @@ namespace CheckersPolygon.Helpers
 {
     public static class Constants
     {
-        public static Color activeCellColor = Color.Black; // Цвет активной ячейки
-        public static Color passiveCellColor = Color.Bisque; // Цвет неактивной ячейки
-        public static Color boardMarkerColor = Color.Brown; // Цвет маркера
-        public static Color whiteCheckerColor = Color.Coral; // Цвет белых шашек
-        public static Color blackCheckerColor = Color.Crimson; // Цвет черных шашек
-        public static Color highlightCellColor = Color.LimeGreen; // Цвет подсветки ячейки
-        public static Color highlightCheckerColor = Color.Maroon; // Цвет подсветки шашки
+        public static Color activeCellColor = Color.Black; // Color of active cell
+        public static Color passiveCellColor = Color.Bisque; // Inactive cell color
+        public static Color boardMarkerColor = Color.Brown; // Marker color
+        public static Color whiteCheckerColor = Color.Coral; // Color of white-side checkers
+        public static Color blackCheckerColor = Color.Crimson; // Color of black-side checkers
+        public static Color highlightCellColor = Color.LimeGreen; // Highlight color
+        public static Color highlightCheckerColor = Color.Maroon; // Highlight color checkers
 
-        // Ключевые слова для выделения их в поле информирования
+        // Keywords for highlighting in the informational field
         public static Dictionary<string, Color> userLogKeywords = new Dictionary<string, Color>()
         {
             { "(?i)белы[а-я]", Color.White },

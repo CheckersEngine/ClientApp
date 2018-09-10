@@ -10,11 +10,11 @@ using System.Windows.Forms;
 
 namespace CheckersPolygon.Forms
 {
-    /* Форма показывает диалоговое окно с сообщением о победе или поражении
+    /* The form shows a dialog box with a message about winning or losing
      */
     public partial class FormVictory : Form
     {
-        /* Передается в качестве параметра победившая сторона и поставлен ли "сортир"
+        /* Arguments are winner side and "enemy has no more moves" flag
          */
         public FormVictory(bool whiteSide, bool toilet)
         {

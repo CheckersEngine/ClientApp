@@ -9,18 +9,18 @@ using System.Drawing;
 
 namespace CheckersPolygon.GameObjects
 {
-    /* Маркер игровой доски
+    /* Game board marker
      */
     class BoardMarker : IDrawable
     {
-        public char marker; // Метка маркера
-        public Color color; // Цвет маркера
-        public byte ZOrder { get; set; } // Слой отрисовки
-        public CheckersCoordinateSet Position { get; set; } // Комбинированная позиция
+        public char marker; // Marker mark
+        public Color color; // Marker color
+        public byte ZOrder { get; set; } // The rendering layer
+        public CheckersCoordinateSet Position { get; set; } // Combined position
 
-        /* Определяется:
-         * - символом маркера
-         * - позицией
+        /* Determined by:
+         * - the symbol of the marker
+         * - position
          */
         public BoardMarker(char marker, CheckersCoordinateSet position)
         {
@@ -30,7 +30,7 @@ namespace CheckersPolygon.GameObjects
             this.color = Constants.boardMarkerColor;
         }
 
-        /* Отрисовка маркера
+        /* Drawing a marker
          */
         public void Draw(Graphics graph)
         {

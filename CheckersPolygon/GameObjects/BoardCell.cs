@@ -9,19 +9,19 @@ using CheckersPolygon.Helpers;
 
 namespace CheckersPolygon.GameObjects
 {
-    /* Клетка доски
+    /* Cell
      */
     public class BoardCell : IDrawable
     {
-        public bool IsActive { get; set; } // Если активная - черная, нет - белая
-        public byte ZOrder { get; set; } // Слой отрисовки
-        public CheckersCoordinateSet Position { get; set; } // Комбинированные координаты
-        public Color color; // Цвет клетки
-        public bool Highlighted { get; set; } // Подсвечена ли клетка
+        public bool IsActive { get; set; } // If active - black, no - white
+        public byte ZOrder { get; set; } // The rendering layer
+        public CheckersCoordinateSet Position { get; set; } // Combined coordinates
+        public Color color; // Color of the cell
+        public bool Highlighted { get; set; } // Is the cell
 
-        /* Определяется:
-         * - Флагом активности
-         * - Комбинированной позицией
+        /* Determined by:
+         * - Flag of activity
+         * - The combined position
          */
         public BoardCell(bool isActive, CheckersCoordinateSet position)
         {
@@ -33,7 +33,7 @@ namespace CheckersPolygon.GameObjects
             this.ZOrder = 0;
         }
 
-        /* Отрисовка клетки
+        /* Cell rendering
          */
         public void Draw(Graphics graph)
         {
@@ -43,7 +43,7 @@ namespace CheckersPolygon.GameObjects
                 Position.drawableSize.Width,
                 Position.drawableSize.Height);
 
-            if (Highlighted) // Если подсвечена
+            if (Highlighted) // If highlighted
                 graph.DrawRectangle(new Pen(Constants.highlightCellColor, 4),
                     Position.screenPosition.X,
                     Position.screenPosition.Y,
