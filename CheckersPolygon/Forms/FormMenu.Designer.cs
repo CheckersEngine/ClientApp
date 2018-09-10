@@ -35,6 +35,7 @@
             this.btnLoadGame = new System.Windows.Forms.Button();
             this.btnContinue = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
+            this.cbLanguage = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // lblCheckers
@@ -123,12 +124,26 @@
             this.btnExit.UseVisualStyleBackColor = true;
             this.btnExit.Click += new System.EventHandler(this.btnExit_Click);
             // 
+            // cbLanguage
+            // 
+            this.cbLanguage.BackColor = System.Drawing.Color.DimGray;
+            this.cbLanguage.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbLanguage.Font = new System.Drawing.Font("Century Gothic", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.cbLanguage.ForeColor = System.Drawing.Color.Gold;
+            this.cbLanguage.FormattingEnabled = true;
+            this.cbLanguage.Location = new System.Drawing.Point(354, 9);
+            this.cbLanguage.Name = "cbLanguage";
+            this.cbLanguage.Size = new System.Drawing.Size(52, 25);
+            this.cbLanguage.TabIndex = 6;
+            this.cbLanguage.SelectedIndexChanged += new System.EventHandler(this.cbLanguage_SelectedIndexChanged);
+            // 
             // FormMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(558, 425);
+            this.Controls.Add(this.cbLanguage);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnContinue);
             this.Controls.Add(this.btnLoadGame);
@@ -158,5 +173,6 @@
         private System.Windows.Forms.Button btnLoadGame;
         private System.Windows.Forms.Button btnContinue;
         private System.Windows.Forms.Button btnExit;
+        private System.Windows.Forms.ComboBox cbLanguage;
     }
 }

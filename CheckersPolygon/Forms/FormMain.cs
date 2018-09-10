@@ -1,4 +1,5 @@
 ﻿using CheckersPolygon.Controllers;
+using CheckersPolygon.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +16,7 @@ namespace CheckersPolygon
 {
     /* Main game form
      */
-    public partial class FormMain : Form
+    public partial class FormMain : Form, ILocalizable
     {
         bool phase = false; // The phase of the game, it depends on it, which checkers will be at the top and which ones at the bottom
         public bool aiAffected = false;
@@ -23,6 +24,7 @@ namespace CheckersPolygon
         public FormMain(bool aiAffected)
         {
             InitializeComponent();
+            LoadLocalizedText();
             Game.InitEngine(ref this.gameBoard, ref this.rtbUserLog, phase, aiAffected); // Initializing the game engine
         }
 
@@ -81,6 +83,7 @@ namespace CheckersPolygon
             {
                 // Continue
                 case DialogResult.Cancel:
+                    LoadLocalizedText();
                     break;
 
                 // A new game
@@ -117,6 +120,13 @@ namespace CheckersPolygon
                 default:
                     break;
             }
+        }
+
+        /* Reload localized text
+         */
+        public void LoadLocalizedText()
+        {
+            btnMenu.Text = Helpers.Constants.localized.textMainMenu;
         }
     }
 }

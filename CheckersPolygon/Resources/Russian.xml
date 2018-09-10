@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<LocalizedStrings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <textMenuContinue>Продолжить</textMenuContinue>
+  <textMenuNewGame>Новая игра</textMenuNewGame>
+  <textMenuSaveGame>Сохранить игру</textMenuSaveGame>
+  <textMenuLoadGame>Загрузить игру</textMenuLoadGame>
+  <textMenuExit>Выход</textMenuExit>
+  <textMenuTitle>Шашки</textMenuTitle>
+  <textMainMenu>Меню</textMainMenu>
+  <textModePlayer>Игрок</textModePlayer>
+  <textModeAI>Компьютер</textModeAI>
+  <textModeCancel>Отмена</textModeCancel>
+  <textModeTitle>Второй игрок</textModeTitle>
+  <logGameSaved>Игра сохранена</logGameSaved>
+  <logErrorGameSaved>Запись не удалась.\n</logErrorGameSaved>
+  <logError>Ошибка</logError>
+  <logGameLoaded>Игра загружена</logGameLoaded>
+  <logErrorGameLoaded>Загрузка не удалась.\n</logErrorGameLoaded>
+  <logBlackWon>Черные победили!</logBlackWon>
+  <logWhiteWon>Белые победили!</logWhiteWon>
+  <logWhiteToilet>Белые позорно проиграли!</logWhiteToilet>
+  <logBlackToilet>Черные позорно проиграли!</logBlackToilet>
+  <sideWhite>Ход белых</sideWhite>
+  <sideBlack>Ход черных</sideBlack>
+  <logTurn>Ход</logTurn>
+  <logMoveTo>на</logMoveTo>
+  <regExWhite>(?i)белы[а-я]</regExWhite>
+  <regExBlack>(?i)черны[а-я]</regExBlack>
+  <regExLoaded>(?i)загружена</regExLoaded>
+  <regExSaved>(?i)сохранена</regExSaved>
+  <regExWon>(?i)победили</regExWon>
+</LocalizedStrings>

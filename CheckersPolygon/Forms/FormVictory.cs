@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CheckersPolygon.Helpers;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -21,22 +22,25 @@ namespace CheckersPolygon.Forms
             InitializeComponent();
             if (!whiteSide)
             {
-                if (!toilet) lblMessage.Text = "Черные победили!";
+                if (!toilet) lblMessage.Text = Constants.localized.logBlackWon;
                 else
                 {
                     lblMessage.Font = new Font("Century Gothic", 24);
-                    lblMessage.Text = "Позорное поражение белых";
+                    lblMessage.Text = Constants.localized.logWhiteToilet;
                 }
                 lblMessage.ForeColor = Color.LawnGreen;
                 btnOK.ForeColor = Color.LawnGreen;
             }
-            else if (toilet)
+            else
             {
-                lblMessage.Font = new Font("Century Gothic", 24);
-                lblMessage.Text = "Позорное поражение черных";
+                if (!toilet)
+                    lblMessage.Text = Constants.localized.logWhiteWon;
+                else
+                {
+                    lblMessage.Font = new Font("Century Gothic", 24);
+                    lblMessage.Text = lblMessage.Text = Constants.localized.logBlackToilet;
+                }
             }
-
-            
         }
 
         private void FormVictory_Load(object sender, EventArgs e)

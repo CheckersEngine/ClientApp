@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<LocalizedStrings xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <textMenuContinue>Continue</textMenuContinue>
+  <textMenuNewGame>New game</textMenuNewGame>
+  <textMenuSaveGame>Save game</textMenuSaveGame>
+  <textMenuLoadGame>Load game</textMenuLoadGame>
+  <textMenuExit>Exit</textMenuExit>
+  <textMenuTitle>Checkers</textMenuTitle>
+  <textMainMenu>Menu</textMainMenu>
+  <textModePlayer>Player</textModePlayer>
+  <textModeAI>AI</textModeAI>
+  <textModeCancel>Cancel</textModeCancel>
+  <textModeTitle>2-nd player</textModeTitle>
+  <logGameSaved>Game saved</logGameSaved>
+  <logErrorGameSaved>Error saving game.\n</logErrorGameSaved>
+  <logError>Error</logError>
+  <logGameLoaded>Game loaded</logGameLoaded>
+  <logErrorGameLoaded>Error loading game.\n</logErrorGameLoaded>
+  <logBlackWon>Black are victorious!</logBlackWon>
+  <logWhiteWon>White are victorious!</logWhiteWon>
+  <logWhiteToilet>White lose with a shame!</logWhiteToilet>
+  <logBlackToilet>Black lose with a shame!</logBlackToilet>
+  <sideWhite>White turn</sideWhite>
+  <sideBlack>Black turn</sideBlack>
+  <logTurn>Turn</logTurn>
+  <logMoveTo>to</logMoveTo>
+  <regExWhite>(?i)white</regExWhite>
+  <regExBlack>(?i)black</regExBlack>
+  <regExLoaded>(?i)loaded</regExLoaded>
+  <regExSaved>(?i)saved</regExSaved>
+  <regExWon>(?i)victorious</regExWon>
+</LocalizedStrings>

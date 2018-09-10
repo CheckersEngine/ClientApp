@@ -85,13 +85,16 @@
     <Compile Include="GameObjects\Pawn.cs" />
     <Compile Include="Helpers\CheckersCoordinateSet.cs" />
     <Compile Include="Helpers\Constants.cs" />
+    <Compile Include="Helpers\Enums\AvailableLanguages.cs" />
     <Compile Include="Helpers\Enums\CheckerSide.cs" />
     <Compile Include="Helpers\Enums\CheckerMoveDirection.cs" />
     <Compile Include="Helpers\Enums\TurnDirection.cs" />
+    <Compile Include="Helpers\LocalizedStrings.cs" />
     <Compile Include="Helpers\Pathfinder.cs" />
     <Compile Include="Helpers\PathPoint.cs" />
     <Compile Include="Interfaces\IChecker.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
+    <Compile Include="Interfaces\ILocalizable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="Forms\FormMain.resx">
@@ -129,11 +132,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Resources\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="1.ico" />
+    <EmbeddedResource Include="Resources\English.xml" />
+    <EmbeddedResource Include="Resources\Russian.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

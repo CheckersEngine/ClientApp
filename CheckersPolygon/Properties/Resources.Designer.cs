@@ -19,7 +19,7 @@ namespace CheckersPolygon.Properties {
     // с помощью такого средства, как ResGen или Visual Studio.
     // Чтобы добавить или удалить член, измените файл .ResX и снова запустите ResGen
     // с параметром /str или перестройте свой проект VS.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -57,6 +57,44 @@ namespace CheckersPolygon.Properties {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;LocalizedStrings xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+        ///  &lt;textMenuContinue&gt;Continue&lt;/textMenuContinue&gt;
+        ///  &lt;textMenuNewGame&gt;New game&lt;/textMenuNewGame&gt;
+        ///  &lt;textMenuSaveGame&gt;Save game&lt;/textMenuSaveGame&gt;
+        ///  &lt;textMenuLoadGame&gt;Load game&lt;/textMenuLoadGame&gt;
+        ///  &lt;textMenuExit&gt;Exit&lt;/textMenuExit&gt;
+        ///  &lt;textMenuTitle&gt;Checkers&lt;/textMenuTitle&gt;
+        ///  &lt;textMainMenu&gt;Menu&lt;/textMainMenu&gt;
+        ///  &lt;textModePlayer&gt;Player&lt;/textModePlayer&gt;
+        ///  &lt;textModeAI&gt; [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string English {
+            get {
+                return ResourceManager.GetString("English", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Ищет локализованную строку, похожую на &lt;?xml version=&quot;1.0&quot;?&gt;
+        ///&lt;LocalizedStrings xmlns:xsi=&quot;http://www.w3.org/2001/XMLSchema-instance&quot; xmlns:xsd=&quot;http://www.w3.org/2001/XMLSchema&quot;&gt;
+        ///  &lt;textMenuContinue&gt;Продолжить&lt;/textMenuContinue&gt;
+        ///  &lt;textMenuNewGame&gt;Новая игра&lt;/textMenuNewGame&gt;
+        ///  &lt;textMenuSaveGame&gt;Сохранить игру&lt;/textMenuSaveGame&gt;
+        ///  &lt;textMenuLoadGame&gt;Загрузить игру&lt;/textMenuLoadGame&gt;
+        ///  &lt;textMenuExit&gt;Выход&lt;/textMenuExit&gt;
+        ///  &lt;textMenuTitle&gt;Шашки&lt;/textMenuTitle&gt;
+        ///  &lt;textMainMenu&gt;Меню&lt;/textMainMenu&gt;
+        ///  &lt;textModePlayer&gt;Игрок&lt;/textModePlayer&gt;
+        ///  &lt; [остаток строки не уместился]&quot;;.
+        /// </summary>
+        internal static string Russian {
+            get {
+                return ResourceManager.GetString("Russian", resourceCulture);
             }
         }
     }

@@ -327,7 +327,7 @@ namespace CheckersPolygon.Controllers
             {
                 // Black's victory
                 Game.drawingController.PrioritizedDraw();
-                Game.userLogController.WriteMessage("Черные победили!");
+                Game.userLogController.WriteMessage(Constants.localized.logBlackWon);
                 FormVictory victoryDialog = new FormVictory(false, false);
                 victoryDialog.ShowDialog();
             }
@@ -335,7 +335,7 @@ namespace CheckersPolygon.Controllers
             {
                 // White's victory
                 Game.drawingController.PrioritizedDraw();
-                Game.userLogController.WriteMessage("Белые победили!");
+                Game.userLogController.WriteMessage(Constants.localized.logWhiteWon);
                 FormVictory victoryDialog = new FormVictory(true, false);
                 victoryDialog.ShowDialog();
             }
@@ -354,14 +354,14 @@ namespace CheckersPolygon.Controllers
                     if (state.turn == CheckerSide.White)
                     {
                         // White lose
-                        Game.userLogController.WriteMessage("Белые позорно проиграли!");
+                        Game.userLogController.WriteMessage(Constants.localized.logWhiteToilet);
                         FormVictory victoryDialog = new FormVictory(true, true);
                         victoryDialog.ShowDialog();
                     }
                     else
                     {
                         // Black lose
-                        Game.userLogController.WriteMessage("Черные позорно проиграли!");
+                        Game.userLogController.WriteMessage(Constants.localized.logBlackToilet);
                         FormVictory victoryDialog = new FormVictory(false, true);
                         victoryDialog.ShowDialog();
                     }
@@ -420,7 +420,7 @@ namespace CheckersPolygon.Controllers
          */
         private void DoMovement(BaseChecker previouslySelectedChecker, Point toPosition)
         {
-            string logMessage = "Ход ";
+            string logMessage = Constants.localized.logTurn + ' ';
             PathPoint turns;
             // Erase highlighting on all checkers
             DeselectAllCheckers();
@@ -450,7 +450,7 @@ namespace CheckersPolygon.Controllers
                                 X = previouslySelectedChecker.Position.boardPosition.X,
                                 Y = previouslySelectedChecker.Position.boardPosition.Y
                             };
-                            logMessage += previouslySelectedChecker.GetPrintablePosition() + " на ";
+                            logMessage += previouslySelectedChecker.GetPrintablePosition() + $" {Constants.localized.logMoveTo} ";
                             // Moving the checker to the selected position
                             previouslySelectedChecker.MoveTo(new Point(toPosition.X, toPosition.Y));
                             logMessage += previouslySelectedChecker.GetPrintablePosition();
@@ -557,12 +557,12 @@ namespace CheckersPolygon.Controllers
             if (state.turn == CheckerSide.White)
             {
                 state.turn = CheckerSide.Black;
-                Game.userLogController.WriteMessage("Ход черных");
+                Game.userLogController.WriteMessage(Constants.localized.sideBlack);
             }
             else
             {
                 state.turn = CheckerSide.White;
-                Game.userLogController.WriteMessage("Ход белых");
+                Game.userLogController.WriteMessage(Constants.localized.sideWhite);
             }
 
             // If the game is against the computer

@@ -1,6 +1,9 @@
 ﻿using CheckersPolygon.Controllers;
 using CheckersPolygon.Forms;
 using CheckersPolygon.GameObjects;
+using CheckersPolygon.Helpers;
+using CheckersPolygon.Helpers.Enums;
+using CheckersPolygon.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,7 +16,7 @@ using System.Windows.Forms;
 
 namespace CheckersPolygon
 {
-    public partial class FormMenu : Form
+    public partial class FormMenu : Form, ILocalizable
     {
         public bool aiAffected; // Does AI influence the game?
         private bool firstStarted; // Is the form open for the first time?
@@ -36,6 +39,9 @@ namespace CheckersPolygon
                 firstStarted = value;
             }
         }
+
+        // Redraw all text on every form
+        public event Action OnLocalizationChanged;
 
         // Decorations
         Pawn decorativePawn = new Pawn(Helpers.Enums.CheckerSide.White, Helpers.Enums.CheckerMoveDirection.Downstairs,
@@ -79,16 +85,36 @@ namespace CheckersPolygon
             };
 
 
-        public FormMenu(bool firstStarted)
+        public FormMenu(bool firstStarted = false)
         {
             InitializeComponent();
+            OnLocalizationChanged += LoadLocalizedText;
             this.FirstStarted = firstStarted;
+            AddLocalizations();
+            LoadLocalizedText();
         }
 
-        public FormMenu()
+        /* Adding the text locales
+         */
+        private void AddLocalizations()
         {
-            InitializeComponent();
-            this.FirstStarted = false;
+            cbLanguage.Items.Clear();
+            foreach (string lang in Helpers.Constants.localizations.Keys)
+                cbLanguage.Items.Add(lang);
+            cbLanguage.SelectedIndex = (int)Helpers.Constants.currentLanguage;
+        }
+
+        /* Reload the text on buttons
+         */
+        public void LoadLocalizedText()
+        {
+            btnContinue.Text = Helpers.Constants.localized.textMenuContinue;
+            btnLoadGame.Text = Helpers.Constants.localized.textMenuLoadGame;
+            btnNewGame.Text = Helpers.Constants.localized.textMenuNewGame;
+            btnSaveGame.Text = Helpers.Constants.localized.textMenuSaveGame;
+            btnExit.Text = Helpers.Constants.localized.textMenuExit;
+            this.Text = Helpers.Constants.localized.textMenuTitle;
+            lblCheckers.Text = Helpers.Constants.localized.textMenuTitle;
         }
 
         /* The button "new game" is pressed
@@ -105,6 +131,8 @@ namespace CheckersPolygon
                     if (firstStarted)
                     {
                         formMain = new FormMain(false);
+                        OnLocalizationChanged += formMain.LoadLocalizedText;
+                        formMain.FormClosing += delegate { OnLocalizationChanged -= formMain.LoadLocalizedText; };
                         formMain.Show();
                     }
                     this.Hide();
@@ -114,6 +142,8 @@ namespace CheckersPolygon
                     if (firstStarted)
                     {
                         formMain = new FormMain(true);
+                        OnLocalizationChanged += formMain.LoadLocalizedText;
+                        formMain.FormClosing += delegate { OnLocalizationChanged -= formMain.LoadLocalizedText; };
                         formMain.Show();
                     }
                     this.Hide();
@@ -156,6 +186,17 @@ namespace CheckersPolygon
                     this.Hide();
                 }
             }
+        }
+
+        /* Language is selected
+         */
+        private void cbLanguage_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Helpers.Constants.LoadLocalization(Helpers.Constants.localizations[cbLanguage.Items[cbLanguage.SelectedIndex].ToString()]);
+            OnLocalizationChanged();
+            Properties.Settings.Default.Language = (int)Helpers.Constants.currentLanguage;
+            Properties.Settings.Default.Save();
+            //LoadLocalizedText();
         }
     }
 }

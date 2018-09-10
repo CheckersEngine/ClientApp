@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CheckersPolygon.Helpers;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,11 +35,11 @@ namespace CheckersPolygon.Controllers
             try
             {
                 gameplayController.SaveState(filename);
-                userLogController.WriteMessage("Игра сохранена");
+                userLogController.WriteMessage(Constants.localized.logGameSaved);
             }
             catch (IOException ex)
             {
-                MessageBox.Show("Запись не удалась.\n" + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Constants.localized.logErrorGameSaved + ex.Message, Constants.localized.logError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -49,11 +50,11 @@ namespace CheckersPolygon.Controllers
             try
             {
                 gameplayController.LoadState(filename);
-                userLogController.WriteMessage("Игра загружена");
+                userLogController.WriteMessage(Constants.localized.logGameLoaded);
             }
             catch (IOException ex)
             {
-                MessageBox.Show("Загрузка не удалась.\n" + ex.Message, "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show(Constants.localized.logErrorGameLoaded + ex.Message, Constants.localized.logError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
         }
