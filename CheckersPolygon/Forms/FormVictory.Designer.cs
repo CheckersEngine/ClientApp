@@ -67,7 +67,7 @@
             this.ForeColor = System.Drawing.Color.OrangeRed;
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(5, 5, 5, 5);
+            this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "FormVictory";
             this.Text = "Победа";
             this.Load += new System.EventHandler(this.FormVictory_Load);

@@ -32,7 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>1.ico</ApplicationIcon>
+    <ApplicationIcon>PolygonCheckers.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -135,6 +135,7 @@
   <ItemGroup />
   <ItemGroup>
     <Content Include="1.ico" />
+    <Content Include="PolygonCheckers.ico" />
     <EmbeddedResource Include="Resources\English.xml" />
     <EmbeddedResource Include="Resources\Russian.xml" />
   </ItemGroup>
