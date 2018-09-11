@@ -4,7 +4,7 @@
 ## Executable
 [Download executable][exe]
 ## Rules
-The game follows the rules of Russian checkers. Simple checkers go only 1 cell ahead and can beat back. The dam walks the entire length of the board in any direction.
+The game follows the rules of Russian checkers. Simple checkers go only 1 cell ahead and can beat back. The king walks the entire length of the board in any direction.
 ## Ai
 There were no requirements for the complexity of AI, so I decided to make it as simple as possible. He performs a search for all available moves that meet the rules and randomly chooses the move without looking for benefits.
 ## Features
