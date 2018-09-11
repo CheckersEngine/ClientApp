@@ -13,4 +13,4 @@ There were no requirements for the complexity of AI, so I decided to make it as 
 * The architecture of the game allows you to untie it from Windows Forms and use another framework for visualization
 * The general algorithm for calculating the stroke for the checker and the king allows you to change the size of the board
 
-[exe]:https://my-files.ru/y2pkws
+[exe]:https://yadi.sk/d/L6oWyqXmQfnIKQ
