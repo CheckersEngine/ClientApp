@@ -1,4 +1,5 @@
 ﻿using CheckersPolygon.Helpers;
+using CheckersPolygon.Helpers.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,35 +18,40 @@ namespace CheckersPolygon.Forms
     {
         /* Arguments are winner side and "enemy has no more moves" flag
          */
-        public FormVictory(bool whiteSide, bool toilet)
+        public FormVictory(CheckerSide winSide, bool toilet)
         {
             InitializeComponent();
-            if (!whiteSide)
-            {
-                if (!toilet) lblMessage.Text = Constants.localized.logBlackWon;
-                else
-                {
-                    lblMessage.Font = new Font("Century Gothic", 24);
-                    lblMessage.Text = Constants.localized.logWhiteToilet;
-                }
-                lblMessage.ForeColor = Color.LawnGreen;
-                btnOK.ForeColor = Color.LawnGreen;
-            }
-            else
-            {
-                if (!toilet)
-                    lblMessage.Text = Constants.localized.logWhiteWon;
-                else
-                {
-                    lblMessage.Font = new Font("Century Gothic", 24);
-                    lblMessage.Text = lblMessage.Text = Constants.localized.logBlackToilet;
-                }
-            }
+            CustomizeMessageBox(winSide, toilet);
         }
 
-        private void FormVictory_Load(object sender, EventArgs e)
+        private void CustomizeMessageBox(CheckerSide winSide, bool toilet)
         {
-
+            switch (winSide)
+            {
+                case CheckerSide.White:
+                    {
+                        if (!toilet)
+                            lblMessage.Text = Constants.localized.logWhiteWon;
+                        else
+                        {
+                            lblMessage.Font = new Font("Century Gothic", 24);
+                            lblMessage.Text = Constants.localized.logWhiteToilet;
+                        }
+                        break;
+                    }
+                case CheckerSide.Black:
+                    {
+                        if (!toilet) lblMessage.Text = Constants.localized.logBlackWon;
+                        else
+                        {
+                            lblMessage.Font = new Font("Century Gothic", 24);
+                            lblMessage.Text = Constants.localized.logBlackToilet;
+                        }
+                        lblMessage.ForeColor = Color.LawnGreen;
+                        btnOK.ForeColor = Color.LawnGreen;
+                        break;
+                    }
+            }
         }
     }
 }

@@ -56,7 +56,6 @@ namespace CheckersPolygon.Controllers
             {
                 MessageBox.Show(Constants.localized.logErrorGameLoaded + ex.Message, Constants.localized.logError, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-
         }
     }
 }

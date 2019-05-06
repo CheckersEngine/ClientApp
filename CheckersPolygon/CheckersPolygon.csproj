@@ -92,6 +92,7 @@
     <Compile Include="Helpers\LocalizedStrings.cs" />
     <Compile Include="Helpers\Pathfinder.cs" />
     <Compile Include="Helpers\PathPoint.cs" />
+    <Compile Include="Helpers\DirectionHelper.cs" />
     <Compile Include="Interfaces\IChecker.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Interfaces\ILocalizable.cs" />

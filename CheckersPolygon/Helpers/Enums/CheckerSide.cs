@@ -8,7 +8,7 @@ namespace CheckersPolygon.Helpers.Enums
 {
     /* Side of checker
      */
-    enum CheckerSide
+    public enum CheckerSide
     {
         White, // White
         Black // Black

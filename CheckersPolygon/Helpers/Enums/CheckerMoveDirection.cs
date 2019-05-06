@@ -8,7 +8,7 @@ namespace CheckersPolygon.Helpers.Enums
 {
     /* Possible directions of the course
      */
-    enum CheckerMoveDirection
+    public enum CheckerMoveDirection
     {
         Upstairs = 1, // Up
         Downstairs = -1, // Down

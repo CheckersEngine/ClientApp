@@ -17,7 +17,7 @@ namespace CheckersPolygon.Helpers
         /* Getting a list of available moves for the checker in the indicated position
          * A recursive method!
          */
-        public PathPoint GetTurns(Point boardPosition, byte turnRange, CheckerSide side, TurnDirection? bannedDirection)
+        public PathPoint GetTurns(Point boardPosition, byte turnRange, CheckerSide side, TurnDirection? bannedDirection = null)
         {
             // The initial list of moves for this position
             PathPoint turnPathPoint = new PathPoint(boardPosition);
@@ -27,10 +27,10 @@ namespace CheckersPolygon.Helpers
             bool nonPacifist = false; // "There are edible options" flag
             Point[] directionSigns = new Point[4]
                 {
-                    GetDirectionSigns(TurnDirection.TopLeft),
-                    GetDirectionSigns(TurnDirection.TopRight),
-                    GetDirectionSigns(TurnDirection.BottomLeft),
-                    GetDirectionSigns(TurnDirection.BottomRight)
+                    DirectionHelper.GetDirectionSigns(TurnDirection.TopLeft),
+                    DirectionHelper.GetDirectionSigns(TurnDirection.TopRight),
+                    DirectionHelper.GetDirectionSigns(TurnDirection.BottomLeft),
+                    DirectionHelper.GetDirectionSigns(TurnDirection.BottomRight)
                 };
 
             // Trying to find a path with blocked directions
@@ -38,10 +38,11 @@ namespace CheckersPolygon.Helpers
             {
                 // Tracing in all directions to find out if there are "aggressive" moves
                 PathPoint[] result = new PathPoint[4];
-                result[0] = TraceSide(turnRange, side, position, TurnDirection.TopLeft);
-                result[1] = TraceSide(turnRange, side, position, TurnDirection.TopRight);
-                result[2] = TraceSide(turnRange, side, position, TurnDirection.BottomLeft);
-                result[3] = TraceSide(turnRange, side, position, TurnDirection.BottomRight);
+                List<TurnDirection> directions = DirectionHelper.GetAllDirections().ToList();
+                for (int i = 0; i < 4; i++)
+                {
+                    result[i] = TraceSide(turnRange, side, position, directions[i]);
+                }
 
                 // Are there "aggressive options"?
                 for (int i = 0; i < 4; i++)
@@ -64,18 +65,13 @@ namespace CheckersPolygon.Helpers
             else
             {
                 List<PathPoint> paths = new List<PathPoint>();
+
                 // Tracing unblocked directions to find out if there are "aggressive" moves
-                if (bannedDirection != TurnDirection.TopLeft)
-                    paths.Add(TraceSide(turnRange, side, position, TurnDirection.TopLeft));
-
-                if (bannedDirection != TurnDirection.TopRight)
-                    paths.Add(TraceSide(turnRange, side, position, TurnDirection.TopRight));
-
-                if (bannedDirection != TurnDirection.BottomLeft)
-                    paths.Add(TraceSide(turnRange, side, position, TurnDirection.BottomLeft));
-
-                if (bannedDirection != TurnDirection.BottomRight)
-                    paths.Add(TraceSide(turnRange, side, position, TurnDirection.BottomRight));
+                foreach (TurnDirection direction in DirectionHelper.GetAllDirections())
+                {
+                    if (bannedDirection != direction)
+                        paths.Add(TraceSide(turnRange, side, position, direction));
+                }
 
                 // Are there "aggressive options"
                 foreach (PathPoint point in paths)
@@ -83,65 +79,21 @@ namespace CheckersPolygon.Helpers
                         nonPacifist = true;
 
                 // Filtering of moves taking into account their possible "aggressiveness" and blocked directions
-
-                // Filtering the upper left direction
-                if (bannedDirection != TurnDirection.TopLeft)
+                foreach (TurnDirection direction in DirectionHelper.GetAllDirections())
                 {
-                    PathPoint result = TraceSide(turnRange, side, position, TurnDirection.TopLeft);
-                    if (!nonPacifist)
+                    if (bannedDirection != direction)
                     {
-                        if (!result.IsDeadEnd()) // All moves
-                            turnPathPoint[TurnDirection.TopLeft].AddRange(result[TurnDirection.TopLeft]);
-                    }
-                    else
-                    {
-                        if (!result.IsOnlyFinalTraces()) // Only aggressive moves
-                            turnPathPoint[TurnDirection.TopLeft].AddRange(result[TurnDirection.TopLeft]);
-                    }
-                }
-                // Right-Top-Right Filtering
-                if (bannedDirection != TurnDirection.TopRight)
-                {
-                    PathPoint result = TraceSide(turnRange, side, position, TurnDirection.TopRight);
-                    if (!nonPacifist)
-                    {
-                        if (!result.IsDeadEnd()) // All moves
-                            turnPathPoint[TurnDirection.TopRight].AddRange(result[TurnDirection.TopRight]);
-                    }
-                    else
-                    {
-                        if (!result.IsOnlyFinalTraces()) // Only aggressive moves
-                            turnPathPoint[TurnDirection.TopRight].AddRange(result[TurnDirection.TopRight]);
-                    }
-                }
-                // Filtration of the lower left direction
-                if (bannedDirection != TurnDirection.BottomLeft)
-                {
-                    PathPoint result = TraceSide(turnRange, side, position, TurnDirection.BottomLeft);
-                    if (!nonPacifist)
-                    {
-                        if (!result.IsDeadEnd()) // All moves
-                            turnPathPoint[TurnDirection.BottomLeft].AddRange(result[TurnDirection.BottomLeft]);
-                    }
-                    else
-                    {
-                        if (!result.IsOnlyFinalTraces()) // Only aggressive moves
-                            turnPathPoint[TurnDirection.BottomLeft].AddRange(result[TurnDirection.BottomLeft]);
-                    }
-                }
-                // Filtration of the lower right direction
-                if (bannedDirection != TurnDirection.BottomRight)
-                {
-                    PathPoint result = TraceSide(turnRange, side, position, TurnDirection.BottomRight);
-                    if (!nonPacifist)
-                    {
-                        if (!result.IsDeadEnd()) // All moves
-                            turnPathPoint[TurnDirection.BottomRight].AddRange(result[TurnDirection.BottomRight]);
-                    }
-                    else
-                    {
-                        if (!result.IsOnlyFinalTraces()) // Only aggressive moves
-                            turnPathPoint[TurnDirection.BottomRight].AddRange(result[TurnDirection.BottomRight]);
+                        PathPoint result = TraceSide(turnRange, side, position, direction);
+                        if (!nonPacifist)
+                        {
+                            if (!result.IsDeadEnd()) // All moves
+                                turnPathPoint[direction].AddRange(result[direction]);
+                        }
+                        else
+                        {
+                            if (!result.IsOnlyFinalTraces()) // Only aggressive moves
+                                turnPathPoint[direction].AddRange(result[direction]);
+                        }
                     }
                 }
             }
@@ -155,7 +107,7 @@ namespace CheckersPolygon.Helpers
         private PathPoint TraceSide(byte turnRange, CheckerSide side, Point position, TurnDirection direction)
         {
             PathPoint path = new PathPoint(position);
-            Point directionSigns = GetDirectionSigns(direction); // Direction vector
+            Point directionSigns = DirectionHelper.GetDirectionSigns(direction); // Direction vector
             // Flags
             bool pacifistFlag = true; // There are only "peaceful" moves
             bool eatableFlag = false; // Found edible
@@ -176,10 +128,10 @@ namespace CheckersPolygon.Helpers
                 // Trying to find an obstacle in a new position
                 // Obstacle -> friendly pawn
                 foreach (BaseChecker checker in side == CheckerSide.White ?
-                    Game.gameplayController.state.whiteCheckers :
-                    Game.gameplayController.state.blackCheckers)
+                    Game.gameplayController.state.WhiteCheckers :
+                    Game.gameplayController.state.BlackCheckers)
                 {
-                    if (newPosition == checker.Position.boardPosition)
+                    if (newPosition == checker.Position.BoardPosition)
                     {
                         obstacleFlag = true; // If an obstacle is found, immediately set flag true
                         break;
@@ -188,10 +140,10 @@ namespace CheckersPolygon.Helpers
 
                 // An attempt to find the enemy in a new position
                 foreach (BaseChecker checker in side == CheckerSide.White ?
-                    Game.gameplayController.state.blackCheckers :
-                    Game.gameplayController.state.whiteCheckers)
+                    Game.gameplayController.state.BlackCheckers :
+                    Game.gameplayController.state.WhiteCheckers)
                 {
-                    if (newPosition == checker.Position.boardPosition)
+                    if (newPosition == checker.Position.BoardPosition)
                     {
                         if (eatableFlag)
                         {
@@ -223,18 +175,9 @@ namespace CheckersPolygon.Helpers
                         tracePoint.Y >= 0 && tracePoint.Y < 8)
                     {
                         // Check next for edible cell for checkers
-                        foreach (BaseChecker checker in Game.gameplayController.state.whiteCheckers)
+                        foreach (BaseChecker checker in Game.gameplayController.state.AllCheckers)
                         {
-                            if (tracePoint == checker.Position.boardPosition)
-                            {
-                                notFinished = true;
-                            }
-                        }
-
-                        // Check next for edible cell for checkers
-                        foreach (BaseChecker checker in Game.gameplayController.state.blackCheckers)
-                        {
-                            if (tracePoint == checker.Position.boardPosition)
+                            if (tracePoint == checker.Position.BoardPosition)
                             {
                                 notFinished = true;
                             }
@@ -246,7 +189,7 @@ namespace CheckersPolygon.Helpers
                             // Tracing from the "edible" position in order to determine the possibility of continuing the current move
                             // All directions are considered except the direction opposite to the vector of the current stroke
                             eatablePosition = tracePoint;
-                            PathPoint possiblePath = GetTurns(eatablePosition, turnRange, side, OppositeDirection(direction));
+                            PathPoint possiblePath = GetTurns(eatablePosition, turnRange, side, DirectionHelper.OppositeDirection(direction));
                             possiblePath.afterAggression = true;
                             path[direction].Add(possiblePath);
                             pacifistFlag = false; // The move ceases to be "peaceful" - an edible variant is found
@@ -274,18 +217,9 @@ namespace CheckersPolygon.Helpers
                     // New position
                     Point newPosition = new Point(position.X + reverseLength * directionSigns.X, position.Y + reverseLength * directionSigns.Y);
                     // An attempt to find the correspondence of any white checker to a given position
-                    foreach (BaseChecker checker in Game.gameplayController.state.whiteCheckers)
+                    foreach (BaseChecker checker in Game.gameplayController.state.AllCheckers)
                     {
-                        if (newPosition == checker.Position.boardPosition)
-                        {
-                            return path;
-                        }
-                    }
-
-                    // An attempt to find the correspondence of any black checker to a given position
-                    foreach (BaseChecker checker in Game.gameplayController.state.blackCheckers)
-                    {
-                        if (newPosition == checker.Position.boardPosition)
+                        if (newPosition == checker.Position.BoardPosition)
                         {
                             return path;
                         }
@@ -298,42 +232,6 @@ namespace CheckersPolygon.Helpers
             }
 
             return path;
-        }
-
-        /* Obtaining the direction vector by its enum type
-         */
-        private Point GetDirectionSigns(TurnDirection direction)
-        {
-            switch (direction)
-            {
-                case TurnDirection.TopLeft:
-                    return new Point(-1, -1);
-                case TurnDirection.TopRight:
-                    return new Point(1, -1);
-                case TurnDirection.BottomLeft:
-                    return new Point(-1, 1);
-                case TurnDirection.BottomRight:
-                default:
-                    return new Point(1, 1);
-            }
-        }
-
-        /* Determining the opposite direction
-         */
-        private TurnDirection OppositeDirection(TurnDirection direction)
-        {
-            switch (direction)
-            {
-                case TurnDirection.TopLeft:
-                    return TurnDirection.BottomRight;
-                case TurnDirection.TopRight:
-                    return TurnDirection.BottomLeft;
-                case TurnDirection.BottomLeft:
-                    return TurnDirection.TopRight;
-                case TurnDirection.BottomRight:
-                default:
-                    return TurnDirection.TopLeft;
-            }
         }
     }
 }

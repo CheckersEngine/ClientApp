@@ -90,9 +90,9 @@ namespace CheckersPolygon
                 case DialogResult.OK:
                     phase = !phase;
                     Game.InitEngine(ref gameBoard, ref rtbUserLog, phase, menu.aiAffected);
-                    if (Game.gameplayController.state.isAiControlled)
+                    if (Game.gameplayController.state.IsAiControlled)
                     {
-                        if (Game.gameplayController.state.aiSide == Helpers.Enums.CheckerSide.White)
+                        if (Game.gameplayController.state.AiSide == Helpers.Enums.CheckerSide.White)
                             Game.gameplayController.AiTurn();
                     }
                     GC.Collect();

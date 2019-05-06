@@ -70,7 +70,6 @@
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "FormVictory";
             this.Text = "Победа";
-            this.Load += new System.EventHandler(this.FormVictory_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
 

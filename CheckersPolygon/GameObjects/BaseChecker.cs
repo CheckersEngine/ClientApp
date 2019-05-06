@@ -48,23 +48,22 @@ namespace CheckersPolygon.GameObjects
         public virtual void Draw(Graphics graph)
         {
             graph.FillEllipse(new SolidBrush(Side == CheckerSide.White ? Constants.whiteCheckerColor : Constants.blackCheckerColor),
-                Position.screenPosition.X, Position.screenPosition.Y,
-                Position.drawableSize.Width, Position.drawableSize.Height);
+                Position.ScreenPosition.X, Position.ScreenPosition.Y,
+                Position.DrawableSize.Width, Position.DrawableSize.Height);
 
             if (selected) // Select a checker if it is selected
                 graph.DrawEllipse(new Pen(Constants.highlightCheckerColor, 4),
-                Position.screenPosition.X, Position.screenPosition.Y,
-                Position.drawableSize.Width, Position.drawableSize.Height);
+                Position.ScreenPosition.X, Position.ScreenPosition.Y,
+                Position.DrawableSize.Width, Position.DrawableSize.Height);
         }
 
         /* Moving the checker to the specified position
          */
         public void MoveTo(Point boardPosition)
         {
-            this.Position.boardPosition = boardPosition;
-            this.Position.drawableSize = Game.gameplayController.cellSize;
-            this.Position.screenPosition.X = this.Position.drawableSize.Width * boardPosition.X;
-            this.Position.screenPosition.Y = this.Position.drawableSize.Height * boardPosition.Y;
+            this.Position.BoardPosition = boardPosition;
+            this.Position.DrawableSize = Game.gameplayController.cellSize;
+            this.Position.ScreenPosition = new Point(this.Position.DrawableSize.Width * boardPosition.X, this.Position.DrawableSize.Height * boardPosition.Y);
         }
 
         /* Position in the coordinates of the marks on the board (eq. C8, A2, H5, ...)
@@ -72,8 +71,8 @@ namespace CheckersPolygon.GameObjects
         public string GetPrintablePosition()
         {
             return (String.Format("{1}{0}", 
-                (char)('8' - Convert.ToByte(this.Position.boardPosition.Y)),
-                (char)('A' + Convert.ToByte(this.Position.boardPosition.X))));
+                (char)('8' - Convert.ToByte(this.Position.BoardPosition.Y)),
+                (char)('A' + Convert.ToByte(this.Position.BoardPosition.X))));
         }
 
         /* List of possible moves for the checker
@@ -88,7 +87,7 @@ namespace CheckersPolygon.GameObjects
         public virtual PathPoint GetPossibleTurns(TurnDirection? bannedDirection)
         {
             Pathfinder pathfinder = new Pathfinder();
-            PathPoint turns = pathfinder.GetTurns(Position.boardPosition, this.TurnRange, Side, bannedDirection);
+            PathPoint turns = pathfinder.GetTurns(Position.BoardPosition, this.TurnRange, Side, bannedDirection);
 
             return turns;
         }

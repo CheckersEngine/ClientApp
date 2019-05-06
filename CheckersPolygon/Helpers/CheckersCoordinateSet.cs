@@ -13,36 +13,41 @@ namespace CheckersPolygon.Helpers
     [Serializable]
     public class CheckersCoordinateSet
     {
-        public Point screenPosition; // Position on the screen
-        public Size drawableSize; // Size for rendering
-        public Point boardPosition; // Position on the game board
+        // Position on the screen
+        public Point ScreenPosition { get; set; }
+
+        // Size for rendering
+        public Size DrawableSize { get; set; }
+
+        // Position on the game board
+        public Point BoardPosition { get; set; } 
 
         public CheckersCoordinateSet()
         {
-            this.screenPosition = new Point();
-            this.drawableSize = new Size();
-            this.boardPosition = new Point();
+            this.ScreenPosition = new Point();
+            this.DrawableSize = new Size();
+            this.BoardPosition = new Point();
         }
 
         public CheckersCoordinateSet(Point boardPosition)
         {
-            this.screenPosition = new Point();
-            this.drawableSize = new Size();
-            this.boardPosition = boardPosition;
+            this.ScreenPosition = new Point();
+            this.DrawableSize = new Size();
+            this.BoardPosition = boardPosition;
         }
 
         public CheckersCoordinateSet(Rectangle screenCoordinates, Point boardPosition)
         {
-            this.screenPosition = screenCoordinates.Location;
-            this.drawableSize = screenCoordinates.Size;
-            this.boardPosition = boardPosition;
+            this.ScreenPosition = screenCoordinates.Location;
+            this.DrawableSize = screenCoordinates.Size;
+            this.BoardPosition = boardPosition;
         }
 
         public CheckersCoordinateSet(Point screenPosition, Size drawableSize, Point boardPosition)
         {
-            this.screenPosition = screenPosition;
-            this.drawableSize = drawableSize;
-            this.boardPosition = boardPosition;
+            this.ScreenPosition = screenPosition;
+            this.DrawableSize = drawableSize;
+            this.BoardPosition = boardPosition;
         }
     }
 }

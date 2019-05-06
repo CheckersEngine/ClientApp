@@ -25,31 +25,31 @@ namespace CheckersPolygon.GameObjects
         public override void Draw(Graphics graph)
         {
             graph.FillEllipse(new SolidBrush(Side == CheckerSide.White ? Constants.whiteCheckerColor : Constants.blackCheckerColor),
-                Position.screenPosition.X, Position.screenPosition.Y,
-                Position.drawableSize.Width, Position.drawableSize.Height);
+                Position.ScreenPosition.X, Position.ScreenPosition.Y,
+                Position.DrawableSize.Width, Position.DrawableSize.Height);
             // Crown of the King
             Point[] crown = new Point[]
                 {
-                    new Point(Position.screenPosition.X + Position.drawableSize.Width / 5, 
-                    Position.screenPosition.Y + Position.drawableSize.Height / 5),
-                    new Point(Position.screenPosition.X + Position.drawableSize.Width / 5, 
-                    Position.screenPosition.Y + Position.drawableSize.Height - Position.drawableSize.Height / 5),
-                    new Point(Position.screenPosition.X + Position.drawableSize.Width - Position.drawableSize.Width / 5,
-                    Position.screenPosition.Y + Position.drawableSize.Height - Position.drawableSize.Height / 5),
-                    new Point(Position.screenPosition.X + Position.drawableSize.Width - Position.drawableSize.Width / 5,
-                    Position.screenPosition.Y + Position.drawableSize.Height / 5),
-                    new Point(Position.screenPosition.X + Position.drawableSize.Width - Position.drawableSize.Width / 4,
-                    Position.screenPosition.Y + Position.drawableSize.Height / 2 - Position.drawableSize.Height / 4),
-                    new Point(Position.screenPosition.X + Position.drawableSize.Width/2,
-                    Position.screenPosition.Y + Position.drawableSize.Height / 5),
-                    new Point(Position.screenPosition.X + Position.drawableSize.Width / 4,
-                    Position.screenPosition.Y + Position.drawableSize.Height / 2 - Position.drawableSize.Height / 4),
+                    new Point(Position.ScreenPosition.X + Position.DrawableSize.Width / 5, 
+                    Position.ScreenPosition.Y + Position.DrawableSize.Height / 5),
+                    new Point(Position.ScreenPosition.X + Position.DrawableSize.Width / 5, 
+                    Position.ScreenPosition.Y + Position.DrawableSize.Height - Position.DrawableSize.Height / 5),
+                    new Point(Position.ScreenPosition.X + Position.DrawableSize.Width - Position.DrawableSize.Width / 5,
+                    Position.ScreenPosition.Y + Position.DrawableSize.Height - Position.DrawableSize.Height / 5),
+                    new Point(Position.ScreenPosition.X + Position.DrawableSize.Width - Position.DrawableSize.Width / 5,
+                    Position.ScreenPosition.Y + Position.DrawableSize.Height / 5),
+                    new Point(Position.ScreenPosition.X + Position.DrawableSize.Width - Position.DrawableSize.Width / 4,
+                    Position.ScreenPosition.Y + Position.DrawableSize.Height / 2 - Position.DrawableSize.Height / 4),
+                    new Point(Position.ScreenPosition.X + Position.DrawableSize.Width/2,
+                    Position.ScreenPosition.Y + Position.DrawableSize.Height / 5),
+                    new Point(Position.ScreenPosition.X + Position.DrawableSize.Width / 4,
+                    Position.ScreenPosition.Y + Position.DrawableSize.Height / 2 - Position.DrawableSize.Height / 4),
                 };
             graph.FillPolygon(Brushes.Black, crown);
             if (selected) // Highlighting of a king, if selected
                 graph.DrawEllipse(new Pen(Constants.highlightCheckerColor, 4),
-                    Position.screenPosition.X, Position.screenPosition.Y,
-                    Position.drawableSize.Width, Position.drawableSize.Height);
+                    Position.ScreenPosition.X, Position.ScreenPosition.Y,
+                    Position.DrawableSize.Width, Position.DrawableSize.Height);
         }
     }
 }

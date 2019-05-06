@@ -16,11 +16,11 @@ namespace CheckersPolygon.Controllers
     class AIController
     {
         // The side played by the computer
-        public CheckerSide side { get; private set; }
+        public CheckerSide Side { get; private set; }
 
         public AIController(CheckerSide aiSide)
         {
-            this.side = aiSide;
+            this.Side = aiSide;
         }
 
         /* Calculating the computer's move
@@ -32,8 +32,8 @@ namespace CheckersPolygon.Controllers
             List<PathPoint> possibleTurns = new List<PathPoint>(); // List of possible moves
 
             // Building a list of possible moves
-            foreach (BaseChecker checker in side == CheckerSide.White ? Game.gameplayController.state.whiteCheckers :
-                Game.gameplayController.state.blackCheckers)
+            foreach (BaseChecker checker in Side == CheckerSide.White ? Game.gameplayController.state.WhiteCheckers :
+                Game.gameplayController.state.BlackCheckers)
             {
                 PathPoint turn = checker.GetPossibleTurns();
                 if (!turn.IsDeadEnd()) // If not a dead-end point, add a route to the list
@@ -58,8 +58,8 @@ namespace CheckersPolygon.Controllers
                     toPosition = chain;
 
                     // We find out the path belonging to the checker and leave the method
-                    foreach (BaseChecker checker in side == CheckerSide.White ? Game.gameplayController.state.whiteCheckers :
-                        Game.gameplayController.state.blackCheckers)
+                    foreach (BaseChecker checker in Side == CheckerSide.White ? Game.gameplayController.state.WhiteCheckers :
+                        Game.gameplayController.state.BlackCheckers)
                     {
                         PathPoint turn = checker.GetPossibleTurns();
                         if (turn.Position == chain.Position)
@@ -74,8 +74,8 @@ namespace CheckersPolygon.Controllers
             Random rnd = new Random();
             toPosition = possibleTurns[rnd.Next(possibleTurns.Count - 1)];
             // Matching the move with the checker
-            foreach (BaseChecker checker in side == CheckerSide.White ? Game.gameplayController.state.whiteCheckers :
-                Game.gameplayController.state.blackCheckers)
+            foreach (BaseChecker checker in Side == CheckerSide.White ? Game.gameplayController.state.WhiteCheckers :
+                Game.gameplayController.state.BlackCheckers)
             {
                 PathPoint turn = checker.GetPossibleTurns();
                 if (turn.Position == toPosition.Position)

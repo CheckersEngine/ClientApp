@@ -11,7 +11,7 @@ namespace CheckersPolygon.Helpers
     /* List of possible moves for the checker from a certain position
      */
     [Serializable]
-    class PathPoint
+    public class PathPoint
     {
         public Point Position { get; private set; } // Current position
         public bool finalPoint = false; // Is the end point in the chain of trace?
@@ -44,26 +44,6 @@ namespace CheckersPolygon.Helpers
             for (int i = 0; i < 4; i++)
             {
                 if (traces[i].Count > 0)
-                    foreach (PathPoint point in traces[i])
-                    {
-                        if (!point.finalPoint) // If there is at least one non-finite extension
-                            return false;
-                    }
-            }
-
-            return true;
-        }
-
-        /* If the position has only peaceful continuations or none at all, with the exception of the blocked direction
-         */
-        public bool IsOnlyFinalTracesExcept(TurnDirection bannedDirection)
-        {
-            if (this.IsDeadEnd()) // If the position is deadlock (no continuation)
-                return true;
-
-            for (int i = 0; i < 4; i++)
-            {
-                if (i != PathPoint.IndexOfDirection(bannedDirection))
                     foreach (PathPoint point in traces[i])
                     {
                         if (!point.finalPoint) // If there is at least one non-finite extension
@@ -160,65 +140,6 @@ namespace CheckersPolygon.Helpers
             }
         }
 
-        /* Return and set the value by a string index (indexer)
-         */
-        public List<PathPoint> this[string direction]
-        {
-            get
-            {
-                switch (direction.ToLower())
-                {
-                    case "topleft":
-                    case "lefttop":
-                    case "tl":
-                    case "lt":
-                        return traces[0];
-                    case "topright":
-                    case "righttop":
-                    case "tr":
-                    case "rt":
-                        return traces[1];
-                    case "bottomleft":
-                    case "leftbottom":
-                    case "bl":
-                    case "lb":
-                        return traces[2];
-                    case "bottomright":
-                    case "rightbottom":
-                    case "br":
-                    case "rb":
-                        return traces[3];
-                    default:
-                        throw new IndexOutOfRangeException("No such index. Use tl/tr/bl/br index.");
-                }
-            }
-
-            set
-            {
-                switch (direction.ToLower())
-                {
-                    case "topleft":
-                    case "tl":
-                        traces[0] = value;
-                        break;
-                    case "topright":
-                    case "tr":
-                        traces[1] = value;
-                        break;
-                    case "bottomleft":
-                    case "bl":
-                        traces[2] = value;
-                        break;
-                    case "bottomright":
-                    case "br":
-                        traces[3] = value;
-                        break;
-                    default:
-                        throw new IndexOutOfRangeException("No such index. Use tl/tr/bl/br index.");
-                }
-            }
-        }
-
         /* Conversion of the direction of move to an integer index
          */
         public static int IndexOfDirection(TurnDirection direction)
@@ -251,24 +172,6 @@ namespace CheckersPolygon.Helpers
             }
 
             return aggresiveDirections;
-        }
-
-        /* Determining the opposite direction
-         */
-        public static TurnDirection GetOppositeDirection(TurnDirection direction)
-        {
-            switch (direction)
-            {
-                case TurnDirection.TopLeft:
-                    return TurnDirection.BottomRight;
-                case TurnDirection.TopRight:
-                    return TurnDirection.BottomLeft;
-                case TurnDirection.BottomLeft:
-                    return TurnDirection.TopRight;
-                case TurnDirection.BottomRight:
-                default:
-                    return TurnDirection.TopLeft;
-            }
         }
     }
 }

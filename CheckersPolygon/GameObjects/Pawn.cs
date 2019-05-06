@@ -27,7 +27,7 @@ namespace CheckersPolygon.GameObjects
         {
             // Find possible moves using the universal Pathfinder class
             Pathfinder pathfinder = new Pathfinder();
-            PathPoint turns = pathfinder.GetTurns(Position.boardPosition, this.TurnRange, Side, bannedDirection);
+            PathPoint turns = pathfinder.GetTurns(Position.BoardPosition, this.TurnRange, Side, bannedDirection);
             // Restriction of a movement taking into account "edible" moves
             if (Direction == CheckerMoveDirection.Upstairs)
             {
@@ -66,16 +66,16 @@ namespace CheckersPolygon.GameObjects
         public override void Draw(Graphics graph)
         {
             graph.FillEllipse(new SolidBrush(Side == CheckerSide.White ? Constants.whiteCheckerColor : Constants.blackCheckerColor),
-                Position.screenPosition.X, Position.screenPosition.Y,
-                Position.drawableSize.Width, Position.drawableSize.Height);
+                Position.ScreenPosition.X, Position.ScreenPosition.Y,
+                Position.DrawableSize.Width, Position.DrawableSize.Height);
             graph.DrawEllipse(new Pen(Color.Black, 3),
-                Position.screenPosition.X + Position.drawableSize.Width / 5, Position.screenPosition.Y + Position.drawableSize.Height / 5,
-                Position.drawableSize.Width - (Position.drawableSize.Width / 5 * 2), Position.drawableSize.Height - (Position.drawableSize.Height / 5 * 2));
+                Position.ScreenPosition.X + Position.DrawableSize.Width / 5, Position.ScreenPosition.Y + Position.DrawableSize.Height / 5,
+                Position.DrawableSize.Width - (Position.DrawableSize.Width / 5 * 2), Position.DrawableSize.Height - (Position.DrawableSize.Height / 5 * 2));
 
             if (selected) // If the checker is selected
                 graph.DrawEllipse(new Pen(Constants.highlightCheckerColor, 4),
-                    Position.screenPosition.X, Position.screenPosition.Y,
-                    Position.drawableSize.Width, Position.drawableSize.Height);
+                    Position.ScreenPosition.X, Position.ScreenPosition.Y,
+                    Position.DrawableSize.Width, Position.DrawableSize.Height);
         }
     }
 }

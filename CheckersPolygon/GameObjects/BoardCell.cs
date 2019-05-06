@@ -38,17 +38,17 @@ namespace CheckersPolygon.GameObjects
         public void Draw(Graphics graph)
         {
             graph.FillRectangle(new SolidBrush(color),
-                Position.screenPosition.X,
-                Position.screenPosition.Y,
-                Position.drawableSize.Width,
-                Position.drawableSize.Height);
+                Position.ScreenPosition.X,
+                Position.ScreenPosition.Y,
+                Position.DrawableSize.Width,
+                Position.DrawableSize.Height);
 
             if (Highlighted) // If highlighted
                 graph.DrawRectangle(new Pen(Constants.highlightCellColor, 4),
-                    Position.screenPosition.X,
-                    Position.screenPosition.Y,
-                    Position.drawableSize.Width,
-                    Position.drawableSize.Height);
+                    Position.ScreenPosition.X,
+                    Position.ScreenPosition.Y,
+                    Position.DrawableSize.Width,
+                    Position.DrawableSize.Height);
         }
     }
 }

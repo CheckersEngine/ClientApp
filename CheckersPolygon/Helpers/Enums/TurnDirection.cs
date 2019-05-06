@@ -9,7 +9,7 @@ namespace CheckersPolygon.Helpers.Enums
 {
     /* The direction of the checker's move
      */
-    enum TurnDirection
+    public enum TurnDirection
     {
         TopLeft,
         TopRight,

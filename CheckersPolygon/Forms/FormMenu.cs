@@ -47,40 +47,40 @@ namespace CheckersPolygon
         Pawn decorativePawn = new Pawn(Helpers.Enums.CheckerSide.White, Helpers.Enums.CheckerMoveDirection.Downstairs,
                 new Helpers.CheckersCoordinateSet()
                 {
-                    screenPosition = new Point(40, 20),
-                    drawableSize = new Size(60, 60)
+                    ScreenPosition = new Point(40, 20),
+                    DrawableSize = new Size(60, 60)
                 });
         King decorativeKing = new King(Helpers.Enums.CheckerSide.Black,
                 new Helpers.CheckersCoordinateSet()
                 {
-                    screenPosition = new Point(450, 20),
-                    drawableSize = new Size(60, 60)
+                    ScreenPosition = new Point(450, 20),
+                    DrawableSize = new Size(60, 60)
                 });
         BoardCell[] decorativeBoardCell = new BoardCell[4]
             {
                 new BoardCell(false,
                     new Helpers.CheckersCoordinateSet()
                 {
-                    screenPosition = new Point(20, 200),
-                    drawableSize = new Size(60, 60)
+                    ScreenPosition = new Point(20, 200),
+                    DrawableSize = new Size(60, 60)
                 }),
                 new BoardCell(true,
                     new Helpers.CheckersCoordinateSet()
                 {
-                    screenPosition = new Point(80, 260),
-                    drawableSize = new Size(60, 60)
+                    ScreenPosition = new Point(80, 260),
+                    DrawableSize = new Size(60, 60)
                 }),
                 new BoardCell(true,
                     new Helpers.CheckersCoordinateSet()
                 {
-                    screenPosition = new Point(400, 260),
-                    drawableSize = new Size(60, 60)
+                    ScreenPosition = new Point(400, 260),
+                    DrawableSize = new Size(60, 60)
                 }),
                 new BoardCell(false,
                     new Helpers.CheckersCoordinateSet()
                 {
-                    screenPosition = new Point(460, 200),
-                    drawableSize = new Size(60, 60)
+                    ScreenPosition = new Point(460, 200),
+                    DrawableSize = new Size(60, 60)
                 })
             };
 

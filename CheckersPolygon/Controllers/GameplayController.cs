@@ -25,8 +25,8 @@ namespace CheckersPolygon.Controllers
      */
     internal sealed class GameplayController
     {
-        public BoardCell[,] board = new BoardCell[8, 8]; // Game board cells (active game object)
-        public BoardMarker[,] markers = new BoardMarker[2, 8]; // Labels of the cells of the game board (1,2,3,4 ... / A, B, C, D ...)
+        private BoardCell[,] board = new BoardCell[8, 8]; // Game board cells (active game object)
+        private BoardMarker[,] markers = new BoardMarker[2, 8]; // Labels of the cells of the game board (1,2,3,4 ... / A, B, C, D ...)
         public GameState state = new GameState(); // The state of game objects (Checkers, etc.)
         public Size cellSize; // Cell size (to support scaling)
         private Panel gameBoard; // Link to the game board on the form
@@ -37,14 +37,14 @@ namespace CheckersPolygon.Controllers
          */
         public GameplayController(ref Panel gameBoard, bool phase, bool aiAffected)
         {
-            this.state.phase = phase;
+            this.state.Phase = phase;
             this.gameBoard = gameBoard;
 
             // If there is a game with a computer
             if (aiAffected)
             {
-                state.isAiControlled = true;
-                state.aiSide = phase == true ? CheckerSide.White : CheckerSide.Black;
+                state.IsAiControlled = true;
+                state.AiSide = phase == true ? CheckerSide.White : CheckerSide.Black;
             }
 
             // Setting the size of a single cell
@@ -52,43 +52,24 @@ namespace CheckersPolygon.Controllers
             cellSize.Height = gameBoard.Size.Height / 8;
 
             // Initializing the cells of the board
-            for (int i = 0; i < 8; i++)
-            {
-                for (int j = 0; j < 8; j++)
-                {
-                    CheckersCoordinateSet position = new CheckersCoordinateSet(
-                        new Point(j * cellSize.Width, i * cellSize.Height),
-                        cellSize,
-                        new Point(j, i));
-
-                    board[j, i] = new BoardCell(((i + j) % 2 == 0) ? false : true,
-                        position);
-
-                    Game.drawingController.AddToDrawingList(board[j, i]);
-                }
-            }
+            InitializeCells();
 
             // Initialization of cell markers (A, B, C, D ...)
-            for (int i = 0; i < 8; i++)
-            {
-                // Vertical markers
-                CheckersCoordinateSet position = new CheckersCoordinateSet(
-                        new Point(2, i * cellSize.Height + (cellSize.Height / 2) - (cellSize.Height / 6)),
-                        new Size(12, 12),
-                        new Point(0, i));
-                markers[0, i] = new BoardMarker(Convert.ToChar('8' - i), position);
-                Game.drawingController.AddToDrawingList(markers[0, i]);
-
-                // Horizontal markers
-                position = new CheckersCoordinateSet(
-                        new Point(i * cellSize.Width + (cellSize.Width / 2) - (cellSize.Width / 6), 8 * cellSize.Height - 18),
-                        new Size(12, 12),
-                        new Point(i, 0));
-                markers[1, i] = new BoardMarker(Convert.ToChar('A' + i), position);
-                Game.drawingController.AddToDrawingList(markers[1, i]);
-            }
+            InitializeMarkers();
 
             // Initial checkers placement
+            InitializeCheckers(phase);
+
+            // The turn of artificial intelligence
+            Game.drawingController.PrioritizedDraw();
+        }
+
+        #region Game initialization
+
+        /* Sets the initial checker placement
+         */
+        private void InitializeCheckers(bool phase)
+        {
             for (int i = 0; i < 3; i++)
             {
                 for (int j = 0; j < 4; j++)
@@ -110,21 +91,65 @@ namespace CheckersPolygon.Controllers
                     BaseChecker checker = new Pawn(CheckerSide.White,
                         phase == true ? CheckerMoveDirection.Downstairs : CheckerMoveDirection.Upstairs,
                         phase == true ? positionTop : positionBottom);
-                    state.whiteCheckers.Add(checker);
+                    state.AllCheckers.Add(checker);
                     Game.drawingController.AddToDrawingList(checker);
 
                     // Initializing the Black Checker
                     checker = new Pawn(CheckerSide.Black,
                         phase == false ? CheckerMoveDirection.Downstairs : CheckerMoveDirection.Upstairs,
                         phase == false ? positionTop : positionBottom);
-                    state.blackCheckers.Add(checker);
+                    state.AllCheckers.Add(checker);
                     Game.drawingController.AddToDrawingList(checker);
                 }
             }
-
-            // The turn of artificial intelligence
-            Game.drawingController.PrioritizedDraw();
         }
+
+        /* Initializes cells
+         */
+        private void InitializeCells()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                for (int j = 0; j < 8; j++)
+                {
+                    CheckersCoordinateSet position = new CheckersCoordinateSet(
+                        new Point(j * cellSize.Width, i * cellSize.Height),
+                        cellSize,
+                        new Point(j, i));
+
+                    board[j, i] = new BoardCell(((i + j) % 2 == 0) ? false : true,
+                        position);
+
+                    Game.drawingController.AddToDrawingList(board[j, i]);
+                }
+            }
+        }
+
+        /* Initializes markers (A, B, C, D...)
+         */
+        private void InitializeMarkers()
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                // Vertical markers
+                CheckersCoordinateSet position = new CheckersCoordinateSet(
+                        new Point(2, i * cellSize.Height + (cellSize.Height / 2) - (cellSize.Height / 6)),
+                        new Size(12, 12),
+                        new Point(0, i));
+                markers[0, i] = new BoardMarker(Convert.ToChar('8' - i), position);
+                Game.drawingController.AddToDrawingList(markers[0, i]);
+
+                // Horizontal markers
+                position = new CheckersCoordinateSet(
+                        new Point(i * cellSize.Width + (cellSize.Width / 2) - (cellSize.Width / 6), 8 * cellSize.Height - 18),
+                        new Size(12, 12),
+                        new Point(i, 0));
+                markers[1, i] = new BoardMarker(Convert.ToChar('A' + i), position);
+                Game.drawingController.AddToDrawingList(markers[1, i]);
+            }
+        }
+
+        #endregion
 
         /* Change all sizes of all game objects
          * Resetting them on the board
@@ -140,36 +165,27 @@ namespace CheckersPolygon.Controllers
             {
                 for (int j = 0; j < 8; j++)
                 {
-                    board[j, i].Position.screenPosition = new Point(j * cellSize.Width, i * cellSize.Height);
-                    board[j, i].Position.drawableSize = cellSize;
+                    board[j, i].Position.ScreenPosition = new Point(j * cellSize.Width, i * cellSize.Height);
+                    board[j, i].Position.DrawableSize = cellSize;
                 }
             }
 
             // Changing the size and coordinates of the board markers
             for (int i = 0; i < 8; i++)
             {
-                markers[0, i].Position.screenPosition = new Point(0,
+                markers[0, i].Position.ScreenPosition = new Point(0,
                     i * cellSize.Height + (cellSize.Height / 2) - (cellSize.Height / 8));
-                markers[1, i].Position.screenPosition = new Point(i * cellSize.Width + (cellSize.Width / 2) - (cellSize.Width / 8),
+                markers[1, i].Position.ScreenPosition = new Point(i * cellSize.Width + (cellSize.Width / 2) - (cellSize.Width / 8),
                     8 * cellSize.Height - 18);
             }
 
-            // Changing the size and coordinates of white checkers
-            foreach (BaseChecker checker in state.whiteCheckers)
+            // Changing the size and coordinates of checkers
+            foreach (BaseChecker checker in state.AllCheckers)
             {
                 checker.Position = new CheckersCoordinateSet(
-                    new Point(checker.Position.boardPosition.X * cellSize.Width, checker.Position.boardPosition.Y * cellSize.Height),
+                    new Point(checker.Position.BoardPosition.X * cellSize.Width, checker.Position.BoardPosition.Y * cellSize.Height),
                     cellSize,
-                    new Point(checker.Position.boardPosition.X, checker.Position.boardPosition.Y));
-            }
-
-            // Change the size and coordinates of the black checkers
-            foreach (BaseChecker checker in state.blackCheckers)
-            {
-                checker.Position = new CheckersCoordinateSet(
-                    new Point(checker.Position.boardPosition.X * cellSize.Width, checker.Position.boardPosition.Y * cellSize.Height),
-                    cellSize,
-                    new Point(checker.Position.boardPosition.X, checker.Position.boardPosition.Y));
+                    new Point(checker.Position.BoardPosition.X, checker.Position.BoardPosition.Y));
             }
 
             // Redrawing the image
@@ -210,16 +226,16 @@ namespace CheckersPolygon.Controllers
                 {
                     // Clicked on an empty field
                     DeselectAllCheckers();
-                    state.activeChecker = null;
-                    state.activeCheckerPathPoint = null;
+                    state.ActiveChecker = null;
+                    state.ActiveCheckerPathPoint = null;
                 }
             }
             else
             {
                 // The checker is selected
                 // Prevent the move by another checker (other than the selected one)
-                if (state.activeChecker != null)
-                    if (state.activeChecker != currentSelectedChecker)
+                if (state.ActiveChecker != null)
+                    if (state.ActiveChecker != currentSelectedChecker)
                     {
                         currentSelectedChecker = null;
                         return;
@@ -228,7 +244,7 @@ namespace CheckersPolygon.Controllers
                 List<BaseChecker> turnList = new List<BaseChecker>();
                 bool aggressive = false;
                 bool turnFound = false;
-                foreach (BaseChecker checker in currentSelectedChecker.Side == CheckerSide.White ? state.whiteCheckers : state.blackCheckers)
+                foreach (BaseChecker checker in currentSelectedChecker.Side == CheckerSide.White ? state.WhiteCheckers : state.BlackCheckers)
                 {
                     PathPoint turns = checker.GetPossibleTurns();
                     if (turns.IsDeadEnd()) continue;
@@ -279,7 +295,7 @@ namespace CheckersPolygon.Controllers
         {
             BaseChecker selectedChecker = null;
             PathPoint toPoint;
-            AIController ai = new AIController(state.aiSide);
+            AIController ai = new AIController(state.AiSide);
 
             // Trying to find the selected checker
             ai.GetAiTurn(out selectedChecker, out toPoint);
@@ -300,7 +316,7 @@ namespace CheckersPolygon.Controllers
                     DoMovement(selectedChecker, toBoardPosition);
                     toPoint = newPath;
                 }
-                while (state.activeChecker != null);
+                while (state.ActiveChecker != null);
                 // Checking the conditions of victory and defeat
                 CheckVictoryConditions();
 
@@ -323,26 +339,26 @@ namespace CheckersPolygon.Controllers
         private void CheckVictoryConditions()
         {
             bool toilet = true;
-            if (state.whiteCheckers.Count == 0)
+            if (state.WhiteCheckers.Count == 0)
             {
                 // Black's victory
                 Game.drawingController.PrioritizedDraw();
                 Game.userLogController.WriteMessage(Constants.localized.logBlackWon);
-                FormVictory victoryDialog = new FormVictory(false, false);
+                FormVictory victoryDialog = new FormVictory(CheckerSide.Black, false);
                 victoryDialog.ShowDialog();
             }
-            else if (state.blackCheckers.Count == 0)
+            else if (state.BlackCheckers.Count == 0)
             {
                 // White's victory
                 Game.drawingController.PrioritizedDraw();
                 Game.userLogController.WriteMessage(Constants.localized.logWhiteWon);
-                FormVictory victoryDialog = new FormVictory(true, false);
+                FormVictory victoryDialog = new FormVictory(CheckerSide.White, false);
                 victoryDialog.ShowDialog();
             }
             else
             {
                 // Check for "toilet" (no more moves)
-                foreach (BaseChecker checker in state.turn == CheckerSide.White ? state.whiteCheckers : state.blackCheckers)
+                foreach (BaseChecker checker in state.TurnOwner == CheckerSide.White ? state.WhiteCheckers : state.BlackCheckers)
                 {
                     if (!checker.GetPossibleTurns().IsDeadEnd())
                         toilet = false;
@@ -351,18 +367,18 @@ namespace CheckersPolygon.Controllers
                 // If no more moves
                 if (toilet)
                 {
-                    if (state.turn == CheckerSide.White)
+                    if (state.TurnOwner == CheckerSide.White)
                     {
                         // White lose
                         Game.userLogController.WriteMessage(Constants.localized.logWhiteToilet);
-                        FormVictory victoryDialog = new FormVictory(true, true);
+                        FormVictory victoryDialog = new FormVictory(CheckerSide.White, true);
                         victoryDialog.ShowDialog();
                     }
                     else
                     {
                         // Black lose
                         Game.userLogController.WriteMessage(Constants.localized.logBlackToilet);
-                        FormVictory victoryDialog = new FormVictory(false, true);
+                        FormVictory victoryDialog = new FormVictory(CheckerSide.Black, true);
                         victoryDialog.ShowDialog();
                     }
                 }
@@ -374,40 +390,19 @@ namespace CheckersPolygon.Controllers
         private bool TryFindSelectedCheckers(MouseEventArgs mouseArgs, ref BaseChecker previouslySelectedChecker, ref BaseChecker currentSelectedChecker)
         {
             bool anyoneSelected = false;
-            if (state.turn == CheckerSide.White) // Compliance with the order of the turn
+            foreach (BaseChecker checker in state.AllCheckers)
             {
-                foreach (BaseChecker whiteChecker in state.whiteCheckers)
-                {
-                    // Mark previously selected checker
-                    if (whiteChecker.selected)
-                        previouslySelectedChecker = whiteChecker;
+                // Mark previously selected checker
+                if (checker.selected)
+                    previouslySelectedChecker = checker;
 
-                    // Marking the checker just selected
-                    Rectangle checkerCoord = new Rectangle(whiteChecker.Position.screenPosition, whiteChecker.Position.drawableSize);
-                    if (checkerCoord.Contains(mouseArgs.Location))
-                    {
-                        SelectChecker(whiteChecker);
-                        currentSelectedChecker = whiteChecker;
-                        anyoneSelected = true;
-                    }
-                }
-            }
-            else
-            {
-                foreach (BaseChecker blackChecker in state.blackCheckers)
+                // Marking the checker just selected
+                Rectangle checkerCoord = new Rectangle(checker.Position.ScreenPosition, checker.Position.DrawableSize);
+                if (checkerCoord.Contains(mouseArgs.Location))
                 {
-                    // Mark previously selected checker
-                    if (blackChecker.selected)
-                        previouslySelectedChecker = blackChecker;
-
-                    // Marking the checker just selected
-                    Rectangle checkerCoord = new Rectangle(blackChecker.Position.screenPosition, blackChecker.Position.drawableSize);
-                    if (checkerCoord.Contains(mouseArgs.Location))
-                    {
-                        SelectChecker(blackChecker);
-                        currentSelectedChecker = blackChecker;
-                        anyoneSelected = true;
-                    }
+                    SelectChecker(checker);
+                    currentSelectedChecker = checker;
+                    anyoneSelected = true;
                 }
             }
             return anyoneSelected;
@@ -426,18 +421,18 @@ namespace CheckersPolygon.Controllers
             DeselectAllCheckers();
 
             // If the move does not start
-            if (state.activeCheckerPathPoint == null)
+            if (state.ActiveCheckerPathPoint == null)
             {
                 turns = previouslySelectedChecker.GetPossibleTurns(); // Calculation of all possible chains of moves for a checker
-                state.activeCheckerPathPoint = turns;
+                state.ActiveCheckerPathPoint = turns;
             }
             else
-                turns = state.activeCheckerPathPoint; // Continuation of the movement
+                turns = state.ActiveCheckerPathPoint; // Continuation of the movement
 
             // If the position is not a deadlock
             if (!turns.IsDeadEnd())
             {
-                state.activeChecker = previouslySelectedChecker;
+                state.ActiveChecker = previouslySelectedChecker;
 
                 // Movement
                 for (int i = 0; i < 4; i++)
@@ -447,8 +442,8 @@ namespace CheckersPolygon.Controllers
                         {
                             Point fromPosition = new Point()
                             {
-                                X = previouslySelectedChecker.Position.boardPosition.X,
-                                Y = previouslySelectedChecker.Position.boardPosition.Y
+                                X = previouslySelectedChecker.Position.BoardPosition.X,
+                                Y = previouslySelectedChecker.Position.BoardPosition.Y
                             };
                             logMessage += previouslySelectedChecker.GetPrintablePosition() + $" {Constants.localized.logMoveTo} ";
                             // Moving the checker to the selected position
@@ -466,32 +461,24 @@ namespace CheckersPolygon.Controllers
                             TryEatEnemyCheckers(previouslySelectedChecker, toPosition, fromPosition, moveDirection);
 
                             // If the checker can become a king
-                            if (previouslySelectedChecker is Pawn && previouslySelectedChecker.Position.boardPosition.Y ==
+                            if (previouslySelectedChecker is Pawn && previouslySelectedChecker.Position.BoardPosition.Y ==
                                 (previouslySelectedChecker.Direction == CheckerMoveDirection.Upstairs ? 0 : 7))
                             {
                                 // Replacement of a checker by a king
                                 King newKing = new King(previouslySelectedChecker.Side, previouslySelectedChecker.Position);
-                                if (previouslySelectedChecker.Side == CheckerSide.White)
-                                {
-                                    state.whiteCheckers.Remove(previouslySelectedChecker);
-                                    state.whiteCheckers.Add(newKing);
-                                }
-                                else
-                                {
-                                    state.blackCheckers.Remove(previouslySelectedChecker);
-                                    state.blackCheckers.Add(newKing);
-                                }
+                                state.AllCheckers.Remove(previouslySelectedChecker);
+                                state.AllCheckers.Add(newKing);
 
                                 // Adding to the list of drawings
                                 Game.drawingController.AddToDrawingList(newKing);
                                 previouslySelectedChecker.Destroy();
 
                                 // Calculation of the further path for a king
-                                state.activeChecker = newKing;
-                                if (state.activeCheckerPathPoint.afterAggression)
+                                state.ActiveChecker = newKing;
+                                if (state.ActiveCheckerPathPoint.afterAggression)
                                 {
-                                    state.activeCheckerPathPoint = newKing.GetPossibleTurns(PathPoint.GetOppositeDirection(GetDirection(moveDirection)));
-                                    if (state.activeCheckerPathPoint.TryGetAggresiveDirections().Count == 0)
+                                    state.ActiveCheckerPathPoint = newKing.GetPossibleTurns(DirectionHelper.GetOppositeDirection(DirectionHelper.GetDirection(moveDirection)));
+                                    if (state.ActiveCheckerPathPoint.TryGetAggresiveDirections().Count == 0)
                                     {
                                         // End of turn
                                         EndTurn();
@@ -500,8 +487,8 @@ namespace CheckersPolygon.Controllers
                                     else
                                     {
                                         DeselectAllCheckers();
-                                        state.activeChecker.selected = true;
-                                        HighlightPossibleTurns(state.activeChecker);
+                                        state.ActiveChecker.selected = true;
+                                        HighlightPossibleTurns(state.ActiveChecker);
                                     }
                                 }
                                 else
@@ -513,17 +500,17 @@ namespace CheckersPolygon.Controllers
 
                             // Find the point he went to
                             // Calculate whether it is possible to continue the movement
-                            foreach (PathPoint waypoint in state.activeCheckerPathPoint[GetDirection(moveDirection)])
+                            foreach (PathPoint waypoint in state.ActiveCheckerPathPoint[DirectionHelper.GetDirection(moveDirection)])
                             {
                                 if (waypoint.Position == toPosition)
                                 {
                                     if (!waypoint.IsOnlyFinalTraces())
                                     {
                                         // Continuation of the movement
-                                        state.activeCheckerPathPoint = waypoint;
+                                        state.ActiveCheckerPathPoint = waypoint;
                                         DeselectAllCheckers();
-                                        state.activeChecker.selected = true;
-                                        HighlightPossibleTurns(state.activeChecker);
+                                        state.ActiveChecker.selected = true;
+                                        HighlightPossibleTurns(state.ActiveChecker);
                                     }
                                     else
                                     {
@@ -539,10 +526,10 @@ namespace CheckersPolygon.Controllers
             else
             {
                 // Deadlock position, end of turn
-                if (state.activeChecker != null || state.activeCheckerPathPoint != null)
+                if (state.ActiveChecker != null || state.ActiveCheckerPathPoint != null)
                 {
-                    state.activeChecker = null;
-                    state.activeCheckerPathPoint = null;
+                    state.ActiveChecker = null;
+                    state.ActiveCheckerPathPoint = null;
                 }
             }
         }
@@ -551,26 +538,26 @@ namespace CheckersPolygon.Controllers
          */
         private void EndTurn()
         {
-            state.activeChecker = null;
-            state.activeCheckerPathPoint = null;
+            state.ActiveChecker = null;
+            state.ActiveCheckerPathPoint = null;
 
-            if (state.turn == CheckerSide.White)
+            if (state.TurnOwner == CheckerSide.White)
             {
-                state.turn = CheckerSide.Black;
+                state.TurnOwner = CheckerSide.Black;
                 Game.userLogController.WriteMessage(Constants.localized.sideBlack);
             }
             else
             {
-                state.turn = CheckerSide.White;
+                state.TurnOwner = CheckerSide.White;
                 Game.userLogController.WriteMessage(Constants.localized.sideWhite);
             }
 
             // If the game is against the computer
-            if (state.isAiControlled)
+            if (state.IsAiControlled)
             {
                 Game.drawingController.PrioritizedDraw();
                 // Computer's turn
-                if (state.aiSide == state.turn)
+                if (state.AiSide == state.TurnOwner)
                     AiTurn();
             }
         }
@@ -586,26 +573,12 @@ namespace CheckersPolygon.Controllers
                 for (int j = fromPosition.Y + moveDirection.Y; j != toPosition.Y; j += moveDirection.Y)
                 {
                     // Addition of all the opponent's checkers met in the course of the "eaten"
-                    if (previouslySelectedChecker.Side == CheckerSide.Black)
+                    foreach (BaseChecker checker in previouslySelectedChecker.Side == CheckerSide.Black? state.WhiteCheckers: state.BlackCheckers)
                     {
-                        foreach (BaseChecker whiteChecker in state.whiteCheckers)
+                        if (checker.Position.BoardPosition.X == i &&
+                            checker.Position.BoardPosition.Y == j)
                         {
-                            if (whiteChecker.Position.boardPosition.X == i &&
-                                whiteChecker.Position.boardPosition.Y == j)
-                            {
-                                eatenCheckers.Add(whiteChecker);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach (BaseChecker blackChecker in state.blackCheckers)
-                        {
-                            if (blackChecker.Position.boardPosition.X == i &&
-                                blackChecker.Position.boardPosition.Y == j)
-                            {
-                                eatenCheckers.Add(blackChecker);
-                            }
+                            eatenCheckers.Add(checker);
                         }
                     }
                 }
@@ -614,12 +587,10 @@ namespace CheckersPolygon.Controllers
             // Destruction of all eaten checkers
             foreach (BaseChecker eatenChecker in eatenCheckers)
             {
-                if (eatenChecker.Side == CheckerSide.White) state.whiteCheckers.Remove(eatenChecker);
-                else state.blackCheckers.Remove(eatenChecker);
+                state.AllCheckers.Remove(eatenChecker);
 
                 eatenChecker.Destroy();
             }
-            eatenCheckers.Clear();
         }
 
         /* Highlighting of all possible moves
@@ -629,14 +600,11 @@ namespace CheckersPolygon.Controllers
             PathPoint turns = currentSelectedChecker.GetPossibleTurns();
             if (!turns.IsDeadEnd())
             {
-                foreach (PathPoint point in turns[TurnDirection.TopLeft])
-                    board[point.Position.X, point.Position.Y].Highlighted = true;
-                foreach (PathPoint point in turns[TurnDirection.TopRight])
-                    board[point.Position.X, point.Position.Y].Highlighted = true;
-                foreach (PathPoint point in turns[TurnDirection.BottomLeft])
-                    board[point.Position.X, point.Position.Y].Highlighted = true;
-                foreach (PathPoint point in turns[TurnDirection.BottomRight])
-                    board[point.Position.X, point.Position.Y].Highlighted = true;
+                foreach (TurnDirection direction in DirectionHelper.GetAllDirections())
+                {
+                    foreach (PathPoint point in turns[direction])
+                        board[point.Position.X, point.Position.Y].Highlighted = true;
+                }
             }
         }
 
@@ -651,22 +619,14 @@ namespace CheckersPolygon.Controllers
 
         /* Select a checker (highlighting it)
          */
-        private void SelectChecker(BaseChecker checker)
+        private void SelectChecker(BaseChecker selectedChecker)
         {
-            foreach (BaseChecker whiteChecker in state.whiteCheckers)
+            foreach (BaseChecker checker in state.AllCheckers)
             {
-                if (whiteChecker == checker)
-                    whiteChecker.selected = true;
+                if (checker == selectedChecker)
+                    checker.selected = true;
                 else
-                    whiteChecker.selected = false;
-            }
-
-            foreach (BaseChecker blackChecker in state.blackCheckers)
-            {
-                if (blackChecker == checker)
-                    blackChecker.selected = true;
-                else
-                    blackChecker.selected = false;
+                    checker.selected = false;
             }
         }
 
@@ -674,34 +634,15 @@ namespace CheckersPolygon.Controllers
          */
         private void DeselectAllCheckers()
         {
-            foreach (BaseChecker whiteChecker in state.whiteCheckers)
-                whiteChecker.selected = false;
-
-            foreach (BaseChecker blackChecker in state.blackCheckers)
-                blackChecker.selected = false;
+            foreach (BaseChecker checker in state.AllCheckers)
+                checker.selected = false;
 
             ClearHighlighting();
         }
 
-        /* Determination of the direction by vector
-         */
-        private TurnDirection GetDirection(Point directionVector)
-        {
-            if (directionVector.Y < 0)
-            {
-                if (directionVector.X < 0) return TurnDirection.TopLeft;
-                else return TurnDirection.TopRight;
-            }
-            else
-            {
-                if (directionVector.X < 0) return TurnDirection.BottomLeft;
-                else return TurnDirection.BottomRight;
-            }
-        }
-
         #endregion
 
-        #region Saveing and loading the game
+        #region Saving and loading the game
 
         /* Saving the game state to a file, serialization
          */
@@ -719,12 +660,9 @@ namespace CheckersPolygon.Controllers
         {
             // Preliminary unbinding of all checkers from the drawing list
             // and removing them from the checkers list
-            foreach (BaseChecker checker in state.whiteCheckers)
+            foreach (BaseChecker checker in state.AllCheckers)
                 checker.Destroy();
-            foreach (BaseChecker checker in state.blackCheckers)
-                checker.Destroy();
-            state.whiteCheckers.Clear();
-            state.blackCheckers.Clear();
+            state.AllCheckers.Clear();
 
             // Reading a state from a file
             FileStream stream = File.OpenRead(filename);
@@ -733,9 +671,7 @@ namespace CheckersPolygon.Controllers
             stream.Close();
 
             // Adding checkers to the drawing list
-            foreach (BaseChecker checker in state.whiteCheckers)
-                Game.drawingController.AddToDrawingList(checker);
-            foreach (BaseChecker checker in state.blackCheckers)
+            foreach (BaseChecker checker in state.AllCheckers)
                 Game.drawingController.AddToDrawingList(checker);
 
             // Redrawing the scene

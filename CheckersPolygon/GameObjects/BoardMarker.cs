@@ -36,7 +36,7 @@ namespace CheckersPolygon.GameObjects
         {
             Font font = new Font("Century Gothic", 12f);
             Brush brush = new SolidBrush(color);
-            graph.DrawString(marker.ToString(), font, brush, Position.screenPosition);
+            graph.DrawString(marker.ToString(), font, brush, Position.ScreenPosition);
         }
     }
 }
