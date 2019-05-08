@@ -36,6 +36,7 @@
             this.btnContinue = new System.Windows.Forms.Button();
             this.btnExit = new System.Windows.Forms.Button();
             this.cbLanguage = new System.Windows.Forms.ComboBox();
+            this.btnSettings = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblCheckers
@@ -59,7 +60,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnNewGame.DialogResult = System.Windows.Forms.DialogResult.OK;
             this.btnNewGame.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnNewGame.Location = new System.Drawing.Point(195, 166);
+            this.btnNewGame.Location = new System.Drawing.Point(195, 145);
             this.btnNewGame.Name = "btnNewGame";
             this.btnNewGame.Size = new System.Drawing.Size(155, 40);
             this.btnNewGame.TabIndex = 1;
@@ -74,7 +75,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnSaveGame.DialogResult = System.Windows.Forms.DialogResult.Abort;
             this.btnSaveGame.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnSaveGame.Location = new System.Drawing.Point(195, 227);
+            this.btnSaveGame.Location = new System.Drawing.Point(195, 191);
             this.btnSaveGame.Name = "btnSaveGame";
             this.btnSaveGame.Size = new System.Drawing.Size(155, 40);
             this.btnSaveGame.TabIndex = 2;
@@ -88,7 +89,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnLoadGame.DialogResult = System.Windows.Forms.DialogResult.Retry;
             this.btnLoadGame.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLoadGame.Location = new System.Drawing.Point(195, 289);
+            this.btnLoadGame.Location = new System.Drawing.Point(195, 237);
             this.btnLoadGame.Name = "btnLoadGame";
             this.btnLoadGame.Size = new System.Drawing.Size(155, 40);
             this.btnLoadGame.TabIndex = 3;
@@ -103,7 +104,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnContinue.DialogResult = System.Windows.Forms.DialogResult.Cancel;
             this.btnContinue.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnContinue.Location = new System.Drawing.Point(195, 102);
+            this.btnContinue.Location = new System.Drawing.Point(195, 99);
             this.btnContinue.Name = "btnContinue";
             this.btnContinue.Size = new System.Drawing.Size(155, 40);
             this.btnContinue.TabIndex = 4;
@@ -116,7 +117,7 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.btnExit.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnExit.Location = new System.Drawing.Point(195, 347);
+            this.btnExit.Location = new System.Drawing.Point(195, 338);
             this.btnExit.Name = "btnExit";
             this.btnExit.Size = new System.Drawing.Size(155, 40);
             this.btnExit.TabIndex = 5;
@@ -137,12 +138,28 @@
             this.cbLanguage.TabIndex = 6;
             this.cbLanguage.SelectedIndexChanged += new System.EventHandler(this.cbLanguage_SelectedIndexChanged);
             // 
+            // btnSettings
+            // 
+            this.btnSettings.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSettings.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnSettings.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSettings.Location = new System.Drawing.Point(195, 283);
+            this.btnSettings.Name = "btnSettings";
+            this.btnSettings.Size = new System.Drawing.Size(155, 40);
+            this.btnSettings.TabIndex = 7;
+            this.btnSettings.Text = "Настройки";
+            this.btnSettings.UseVisualStyleBackColor = true;
+            this.btnSettings.Click += new System.EventHandler(this.BtnSettings_Click);
+            // 
             // FormMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 21F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(558, 425);
+            this.Controls.Add(this.btnSettings);
             this.Controls.Add(this.cbLanguage);
             this.Controls.Add(this.btnExit);
             this.Controls.Add(this.btnContinue);
@@ -174,5 +191,6 @@
         private System.Windows.Forms.Button btnContinue;
         private System.Windows.Forms.Button btnExit;
         private System.Windows.Forms.ComboBox cbLanguage;
+        private System.Windows.Forms.Button btnSettings;
     }
 }

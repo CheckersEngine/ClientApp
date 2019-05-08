@@ -24,7 +24,7 @@ namespace CheckersPolygon.GameObjects
          */
         public override void Draw(Graphics graph)
         {
-            graph.FillEllipse(new SolidBrush(Side == CheckerSide.White ? Constants.whiteCheckerColor : Constants.blackCheckerColor),
+            graph.FillEllipse(new SolidBrush(Side == CheckerSide.White ? Constants.colorScheme.WhiteCheckerColor : Constants.colorScheme.BlackCheckerColor),
                 Position.ScreenPosition.X, Position.ScreenPosition.Y,
                 Position.DrawableSize.Width, Position.DrawableSize.Height);
             // Crown of the King
@@ -47,7 +47,7 @@ namespace CheckersPolygon.GameObjects
                 };
             graph.FillPolygon(Brushes.Black, crown);
             if (selected) // Highlighting of a king, if selected
-                graph.DrawEllipse(new Pen(Constants.highlightCheckerColor, 4),
+                graph.DrawEllipse(new Pen(Constants.colorScheme.HighlightCheckerColor, 4),
                     Position.ScreenPosition.X, Position.ScreenPosition.Y,
                     Position.DrawableSize.Width, Position.DrawableSize.Height);
         }

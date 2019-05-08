@@ -13,6 +13,7 @@ namespace CheckersPolygon.Helpers
         public string textMenuNewGame = "New game";
         public string textMenuSaveGame = "Save game";
         public string textMenuLoadGame = "Load game";
+        public string textMenuSettings = "Settings";
         public string textMenuExit = "Exit";
         public string textMenuTitle = "Checkers";
         public string textMainMenu = "Menu";
@@ -20,6 +21,17 @@ namespace CheckersPolygon.Helpers
         public string textModeAI = "AI";
         public string textModeCancel = "Cancel";
         public string textModeTitle = "2-nd player";
+        public string textSettingsHeader = "Settings";
+        public string textSettingsActiveCellColor = "Active cell color";
+        public string textSettingsPassiveCellColor = "Passive cell color";
+        public string textSettingsBoardMarkerColor = "Marker color";
+        public string textSettingsWhiteCheckerColor = "White checker color";
+        public string textSettingsBlackCheckerColor = "Black checker color";
+        public string textSettingsHighlightCellColor = "Highlighted cell color";
+        public string textSettingsHighlightCheckerColor = "Highlighted checker color";
+        public string textSettingsAccept = "Accept";
+        public string textSettingsDecline = "Decline";
+        public string textSettingsDefault = "Default";
 
         public string logGameSaved = "Game saved";
         public string logErrorGameSaved = "Error saving game";

@@ -47,10 +47,8 @@
             this.gameBoard.Name = "gameBoard";
             this.gameBoard.Size = new System.Drawing.Size(566, 438);
             this.gameBoard.TabIndex = 0;
-            this.gameBoard.Click += new System.EventHandler(this.gameBoard_Click);
             this.gameBoard.Paint += new System.Windows.Forms.PaintEventHandler(this.gameBoard_Paint);
             this.gameBoard.MouseClick += new System.Windows.Forms.MouseEventHandler(this.gameBoard_MouseClick);
-            this.gameBoard.Resize += new System.EventHandler(this.gameBoard_Resize);
             // 
             // rtbUserLog
             // 
@@ -107,7 +105,6 @@
             this.Name = "FormMain";
             this.Text = "Checkers Polygon 2017.5";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.FormMain_FormClosed);
-            this.Load += new System.EventHandler(this.FormMain_Load);
             this.Resize += new System.EventHandler(this.FormMain_Resize);
             this.panelLeftDock.ResumeLayout(false);
             this.ResumeLayout(false);

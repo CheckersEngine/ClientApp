@@ -4,6 +4,7 @@
   <textMenuNewGame>New game</textMenuNewGame>
   <textMenuSaveGame>Save game</textMenuSaveGame>
   <textMenuLoadGame>Load game</textMenuLoadGame>
+  <textMenuSettings>Settings</textMenuSettings>
   <textMenuExit>Exit</textMenuExit>
   <textMenuTitle>Checkers</textMenuTitle>
   <textMainMenu>Menu</textMainMenu>
@@ -11,6 +12,17 @@
   <textModeAI>AI</textModeAI>
   <textModeCancel>Cancel</textModeCancel>
   <textModeTitle>2-nd player</textModeTitle>
+  <textSettingsHeader>Settings</textSettingsHeader>
+  <textSettingsActiveCellColor>Active cell color</textSettingsActiveCellColor>
+  <textSettingsPassiveCellColor>Inactive cell color</textSettingsPassiveCellColor>
+  <textSettingsBoardMarkerColor>Marker color</textSettingsBoardMarkerColor>
+  <textSettingsWhiteCheckerColor>White checker color</textSettingsWhiteCheckerColor>
+  <textSettingsBlackCheckerColor>Black checker color</textSettingsBlackCheckerColor>
+  <textSettingsHighlightCellColor>Highlighted cell color</textSettingsHighlightCellColor>
+  <textSettingsHighlightCheckerColor>Highlighted checker color</textSettingsHighlightCheckerColor>
+  <textSettingsAccept>Accept</textSettingsAccept>
+  <textSettingsDecline>Decline</textSettingsDecline>
+  <textSettingsDefault>Default</textSettingsDefault>
   <logGameSaved>Game saved</logGameSaved>
   <logErrorGameSaved>Error saving game.\n</logErrorGameSaved>
   <logError>Error</logError>

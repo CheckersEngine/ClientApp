@@ -54,6 +54,12 @@
     <Compile Include="Controllers\GameplayController.cs" />
     <Compile Include="Controllers\GameState.cs" />
     <Compile Include="Controllers\UserLogController.cs" />
+    <Compile Include="Forms\ColorPicker.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Forms\ColorPicker.Designer.cs">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormMain.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -72,6 +78,18 @@
     <Compile Include="Forms\FormModeMenu.Designer.cs">
       <DependentUpon>FormModeMenu.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\FormNewGame.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormNewGame.Designer.cs">
+      <DependentUpon>FormNewGame.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\FormSettings.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\FormSettings.Designer.cs">
+      <DependentUpon>FormSettings.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\FormVictory.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,6 +102,7 @@
     <Compile Include="GameObjects\King.cs" />
     <Compile Include="GameObjects\Pawn.cs" />
     <Compile Include="Helpers\CheckersCoordinateSet.cs" />
+    <Compile Include="Helpers\ColorScheme.cs" />
     <Compile Include="Helpers\Constants.cs" />
     <Compile Include="Helpers\Enums\AvailableLanguages.cs" />
     <Compile Include="Helpers\Enums\CheckerSide.cs" />
@@ -93,11 +112,15 @@
     <Compile Include="Helpers\Pathfinder.cs" />
     <Compile Include="Helpers\PathPoint.cs" />
     <Compile Include="Helpers\DirectionHelper.cs" />
+    <Compile Include="Helpers\XmlColor.cs" />
     <Compile Include="Interfaces\IChecker.cs" />
     <Compile Include="Interfaces\IDrawable.cs" />
     <Compile Include="Interfaces\ILocalizable.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Forms\ColorPicker.resx">
+      <DependentUpon>ColorPicker.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
@@ -106,6 +129,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormModeMenu.resx">
       <DependentUpon>FormModeMenu.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormNewGame.resx">
+      <DependentUpon>FormNewGame.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\FormSettings.resx">
+      <DependentUpon>FormSettings.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\FormVictory.resx">
       <DependentUpon>FormVictory.cs</DependentUpon>

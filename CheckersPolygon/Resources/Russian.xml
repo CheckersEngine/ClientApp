@@ -4,6 +4,7 @@
   <textMenuNewGame>Новая игра</textMenuNewGame>
   <textMenuSaveGame>Сохранить игру</textMenuSaveGame>
   <textMenuLoadGame>Загрузить игру</textMenuLoadGame>
+  <textMenuSettings>Настройки</textMenuSettings>
   <textMenuExit>Выход</textMenuExit>
   <textMenuTitle>Шашки</textMenuTitle>
   <textMainMenu>Меню</textMainMenu>
@@ -11,6 +12,17 @@
   <textModeAI>Компьютер</textModeAI>
   <textModeCancel>Отмена</textModeCancel>
   <textModeTitle>Второй игрок</textModeTitle>
+  <textSettingsHeader>Настройки</textSettingsHeader>
+  <textSettingsActiveCellColor>Цвет игровой ячейки</textSettingsActiveCellColor>
+  <textSettingsPassiveCellColor>Цвет неигровой ячейки</textSettingsPassiveCellColor>
+  <textSettingsBoardMarkerColor>Цвет маркера</textSettingsBoardMarkerColor>
+  <textSettingsWhiteCheckerColor>Цвет белой шашки</textSettingsWhiteCheckerColor>
+  <textSettingsBlackCheckerColor>Цвет черной шашки</textSettingsBlackCheckerColor>
+  <textSettingsHighlightCellColor>Цвет подсветки ячейки</textSettingsHighlightCellColor>
+  <textSettingsHighlightCheckerColor>Цвет подсветки шашки</textSettingsHighlightCheckerColor>
+  <textSettingsAccept>Принять</textSettingsAccept>
+  <textSettingsDecline>Отказаться</textSettingsDecline>
+  <textSettingsDefault>По умолчанию</textSettingsDefault>
   <logGameSaved>Игра сохранена</logGameSaved>
   <logErrorGameSaved>Запись не удалась.\n</logErrorGameSaved>
   <logError>Ошибка</logError>

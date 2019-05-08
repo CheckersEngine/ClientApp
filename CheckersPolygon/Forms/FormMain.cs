@@ -28,26 +28,11 @@ namespace CheckersPolygon
             Game.InitEngine(ref this.gameBoard, ref this.rtbUserLog, phase, aiAffected); // Initializing the game engine
         }
 
-        private void FormMain_Load(object sender, EventArgs e)
-        {
-            //Game.InitEngine(ref this.gameBoard, ref this.rtbUserLog, phase, aiAffected); // Initializing the game engine
-        }
-
-        private void gameBoard_Click(object sender, EventArgs e)
-        {
-
-        }
-
         /* Redrawing the image
          */
         private void gameBoard_Paint(object sender, PaintEventArgs e)
         {
             Game.drawingController.PrioritizedDraw();
-        }
-
-        private void gameBoard_Resize(object sender, EventArgs e)
-        {
-
         }
 
         /* Redraw the image when changing the size of the form

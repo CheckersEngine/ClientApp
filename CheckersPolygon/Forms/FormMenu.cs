@@ -112,6 +112,7 @@ namespace CheckersPolygon
             btnLoadGame.Text = Helpers.Constants.localized.textMenuLoadGame;
             btnNewGame.Text = Helpers.Constants.localized.textMenuNewGame;
             btnSaveGame.Text = Helpers.Constants.localized.textMenuSaveGame;
+            btnSettings.Text = Helpers.Constants.localized.textMenuSettings;
             btnExit.Text = Helpers.Constants.localized.textMenuExit;
             this.Text = Helpers.Constants.localized.textMenuTitle;
             lblCheckers.Text = Helpers.Constants.localized.textMenuTitle;
@@ -197,6 +198,25 @@ namespace CheckersPolygon
             Properties.Settings.Default.Language = (int)Helpers.Constants.currentLanguage;
             Properties.Settings.Default.Save();
             //LoadLocalizedText();
+        }
+
+        /* Settings button clicked
+         */
+        private void BtnSettings_Click(object sender, EventArgs e)
+        {
+            FormSettings dialog = new FormSettings();
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                Helpers.Constants.colorScheme.ActiveCellColor = dialog.cpActiveCell.Color;
+                Helpers.Constants.colorScheme.PassiveCellColor = dialog.cpInactiveCell.Color;
+                Helpers.Constants.colorScheme.BoardMarkerColor = dialog.cpMarker.Color;
+                Helpers.Constants.colorScheme.WhiteCheckerColor = dialog.cpWhiteChecker.Color;
+                Helpers.Constants.colorScheme.BlackCheckerColor = dialog.cpBlackChecker.Color;
+                Helpers.Constants.colorScheme.HighlightCellColor = dialog.cpHighlightedCell.Color;
+                Helpers.Constants.colorScheme.HighlightCheckerColor = dialog.cpHighlightedChecker.Color;
+
+                Helpers.Constants.SaveColorScheme();
+            }
         }
     }
 }

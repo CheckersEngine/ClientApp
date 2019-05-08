@@ -65,7 +65,7 @@ namespace CheckersPolygon.GameObjects
          */
         public override void Draw(Graphics graph)
         {
-            graph.FillEllipse(new SolidBrush(Side == CheckerSide.White ? Constants.whiteCheckerColor : Constants.blackCheckerColor),
+            graph.FillEllipse(new SolidBrush(Side == CheckerSide.White ? Constants.colorScheme.WhiteCheckerColor : Constants.colorScheme.BlackCheckerColor),
                 Position.ScreenPosition.X, Position.ScreenPosition.Y,
                 Position.DrawableSize.Width, Position.DrawableSize.Height);
             graph.DrawEllipse(new Pen(Color.Black, 3),
@@ -73,7 +73,7 @@ namespace CheckersPolygon.GameObjects
                 Position.DrawableSize.Width - (Position.DrawableSize.Width / 5 * 2), Position.DrawableSize.Height - (Position.DrawableSize.Height / 5 * 2));
 
             if (selected) // If the checker is selected
-                graph.DrawEllipse(new Pen(Constants.highlightCheckerColor, 4),
+                graph.DrawEllipse(new Pen(Constants.colorScheme.HighlightCheckerColor, 4),
                     Position.ScreenPosition.X, Position.ScreenPosition.Y,
                     Position.DrawableSize.Width, Position.DrawableSize.Height);
         }

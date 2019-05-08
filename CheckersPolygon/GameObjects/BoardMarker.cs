@@ -27,7 +27,7 @@ namespace CheckersPolygon.GameObjects
             this.marker = marker;
             ZOrder = 2;
             this.Position = position;
-            this.color = Constants.boardMarkerColor;
+            this.color = Constants.colorScheme.BoardMarkerColor;
         }
 
         /* Drawing a marker

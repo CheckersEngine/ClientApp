@@ -47,12 +47,12 @@ namespace CheckersPolygon.GameObjects
          */
         public virtual void Draw(Graphics graph)
         {
-            graph.FillEllipse(new SolidBrush(Side == CheckerSide.White ? Constants.whiteCheckerColor : Constants.blackCheckerColor),
+            graph.FillEllipse(new SolidBrush(Side == CheckerSide.White ? Constants.colorScheme.WhiteCheckerColor : Constants.colorScheme.BlackCheckerColor),
                 Position.ScreenPosition.X, Position.ScreenPosition.Y,
                 Position.DrawableSize.Width, Position.DrawableSize.Height);
 
             if (selected) // Select a checker if it is selected
-                graph.DrawEllipse(new Pen(Constants.highlightCheckerColor, 4),
+                graph.DrawEllipse(new Pen(Constants.colorScheme.HighlightCheckerColor, 4),
                 Position.ScreenPosition.X, Position.ScreenPosition.Y,
                 Position.DrawableSize.Width, Position.DrawableSize.Height);
         }

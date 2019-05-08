@@ -15,18 +15,16 @@ namespace CheckersPolygon.Helpers
         static Constants()
         {
             LoadLocalization((AvailableLanguages)Properties.Settings.Default.Language);
+            LoadColorScheme();
         }
 
+        // Current game language
         public static AvailableLanguages currentLanguage = AvailableLanguages.English;
 
-        public static Color activeCellColor = Color.Black; // Color of active cell
-        public static Color passiveCellColor = Color.Bisque; // Inactive cell color
-        public static Color boardMarkerColor = Color.Brown; // Marker color
-        public static Color whiteCheckerColor = Color.Coral; // Color of white-side checkers
-        public static Color blackCheckerColor = Color.Crimson; // Color of black-side checkers
-        public static Color highlightCellColor = Color.LimeGreen; // Highlight color
-        public static Color highlightCheckerColor = Color.Maroon; // Highlight color checkers
+        // Color scheme of visual elements
+        public static ColorScheme colorScheme;
 
+        // Current localized text
         public static LocalizedStrings localized;
 
         // Keywords for highlighting in the informational field
@@ -72,6 +70,41 @@ namespace CheckersPolygon.Helpers
             };
 
             currentLanguage = language;
+        }
+
+        /* Load color scheme from settings
+         */
+        private static void LoadColorScheme()
+        {
+            if (Properties.Settings.Default.ColorSchemeFile?.Length > 0)
+            {
+                XmlSerializer serializer = new XmlSerializer(typeof(ColorScheme));
+
+                using (var stream = new MemoryStream(Encoding.Unicode.GetBytes(Properties.Settings.Default.ColorSchemeFile)))
+                    colorScheme = (ColorScheme)serializer.Deserialize(stream);
+            }
+            else
+                colorScheme = new ColorScheme();
+        }
+
+        /* Save color scheme to settings
+         */
+        public static void SaveColorScheme()
+        {
+            XmlSerializer serializer = new XmlSerializer(typeof(ColorScheme));
+            string toWrite;
+            using (MemoryStream stream = new MemoryStream())
+            {
+                serializer.Serialize(stream, colorScheme);
+
+                stream.Position = 0;
+                using (StreamReader reader = new StreamReader(stream))
+                {
+                    toWrite = reader.ReadToEnd();
+                    Properties.Settings.Default.ColorSchemeFile = toWrite;
+                }
+            }
+            Properties.Settings.Default.Save();
         }
     }
 }
